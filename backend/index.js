@@ -159,11 +159,16 @@ function createPersonaPrompt(personaData = {
 
 function createImagePrompt(personaData = {
     name: '',
-    age: ''
+    age: '',
+    interests: '',
 }) {
-    const { name, age } = personaData;
+    const { name, age, interests } = personaData;
 
-    return `Generate a photo-realistic image of a ${age} years old persona named ${name}.`;
+    if (!typeof interests === 'string') {
+        interests = interests.join(', ');
+    }
+
+    return `Generate a photo-realistic image of a ${age} years old persona named ${name} with interests in ${interests}.`;
 }
 
 function createAskQuestionPrompt(question, personaData) {
@@ -179,7 +184,7 @@ function createMessagesPrompt(personaData) {
 
     ${JSON.stringify(personaData)}
     
-    Act like the persona i provided you with. Come up with 10 funny and authentic chat messages this persona might send a good friend taking into account the special characteristics and fun facts of the persona. Format the 'messages' in  JSON format. Only output the valid JSON.`
+    Act like the persona i provided you with. Come up with 10 funny and authentic chat messages this persona might send a good friend to tease them, taking into account the special characteristics and fun facts of the persona. Format the 'messages' in  JSON format. Only output the valid JSON.`
 }
 
 // Routes
