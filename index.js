@@ -23,6 +23,10 @@ const openai = new OpenAIApi(new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 }));
 
+function createPersonaPrompt(personaData) {
+
+}
+
 // Routes
 app.get('/', wrap(async (req, res, next) => {
     console.log(req.protocol + "://" + req.headers.host);
@@ -36,7 +40,16 @@ app.get('/', wrap(async (req, res, next) => {
 }));
 
 app.get('/api/persona', wrap(async (req, res, next) => {
-
+    const answer = await openai.createChatCompletion({
+        model: 'gpt-3.5-turbo',
+        messages: [
+            {
+                role: 'user',
+                content: createPersonaPrompt(req.body),
+            }
+        ],
+    });
+    res.json({ answer: answer.data.choices[0].message });
 }));
 
 // Error Handling
