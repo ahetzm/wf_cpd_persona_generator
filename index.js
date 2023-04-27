@@ -30,6 +30,8 @@ const openai = new OpenAIApi(
   })
 );
 
+function createPersonaPrompt(personaData) {}
+
 // Routes
 app.get(
   "/",
@@ -47,7 +49,18 @@ app.get(
 
 app.get(
   "/api/persona",
-  wrap(async (req, res, next) => {})
+  wrap(async (req, res, next) => {
+    const answer = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "user",
+          content: createPersonaPrompt(req.body),
+        },
+      ],
+    });
+    res.json({ answer: answer.data.choices[0].message });
+  })
 );
 
 // Error Handling

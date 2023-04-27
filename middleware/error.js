@@ -8,7 +8,6 @@ export function invalidPathHandler(req, res, next) {
     return res.send({ error: "Error", message: 'Requested Endpoint not found' });
 }
 
-
 export function errorLogger(err, req, res, next) {
     console.log('❌ ' + new Date().toISOString() + ' - ' + err.name + ": " + err.message);
     // console.log('❌ ' + new Date().toISOString(), err);
