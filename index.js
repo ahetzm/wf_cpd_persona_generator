@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import compression from 'compression';
+import { Configuration, OpenAIApi } from 'openai';
 import { errorHandling, errorLogger, invalidPathHandler, wrap } from './middleware/error.js';
 
 
@@ -17,6 +18,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 dotenv.config();
 
+// Init OpenAI
+const openai = new OpenAIApi(new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+}));
 
 // Routes
 app.get('/', wrap(async (req, res, next) => {
