@@ -157,6 +157,31 @@ function createPersonaPrompt(personaData = {
 }
  */
 
+function createImagePrompt(personaData = {
+    name: '',
+    age: ''
+}) {
+    const { name, age } = personaData;
+
+    return `Generate a photo-realistic image of a ${age} years old persona named ${name}.`;
+}
+
+function createAskQuestionPrompt(question, personaData) {
+    return `I provide you with data of a persona in JSON format:
+
+    ${JSON.stringify(personaData)}
+    
+    Act like the persona i provided you with. Answer in an authentic way, as If you are being interviewed to the following question: ${question}`
+}
+
+function createMessagesPrompt(personaData) {
+    return `I provide you with data of a persona in JSON format:
+
+    ${JSON.stringify(personaData)}
+    
+    Act like the persona i provided you with. Come up with 10 funny and authentic chat messages this persona might send a good friend taking into account the special characteristics and fun facts of the persona. Format the 'messages' in  JSON format. Only output the valid JSON.`
+}
+
 // Routes
 app.get(
     "/",
@@ -175,6 +200,7 @@ app.get(
 app.post(
     "/api/persona",
     wrap(async (req, res, next) => {
+        console.log("creating persona");
         const answer = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
             messages: [
@@ -188,10 +214,70 @@ app.post(
         const repaired = jsonrepair(answer.data.choices[0].message.content);
         const parsed = JSON.parse(repaired);
         console.log(parsed);
-
-        res.json({ answer: parsed });
+        res.json({ data: parsed });
     })
 );
+
+app.post(
+    "/api/image",
+    wrap(async (req, res, next) => {
+        console.log('creating image');
+
+        const prompt = createImagePrompt(req.body).toString();
+
+        const response = await openai.createImage({
+            prompt: prompt,
+            n: 4,
+            size: "1024x1024",
+        });
+
+        res.json({ data: response.data.data });
+    })
+);
+
+app.post(
+    "/api/ask",
+    wrap(async (req, res, next) => {
+        console.log('asking question');
+        const prompt = createAskQuestionPrompt(req.body.question, req.body.data).toString();
+        console.log(prompt);
+        const answer = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo",
+            messages: [
+                {
+                    role: "user",
+                    content: prompt,
+                },
+            ],
+        });
+
+        res.json({ data: answer.data.choices[0].message.content });
+    })
+);
+
+app.post(
+    "/api/messages",
+    wrap(async (req, res, next) => {
+        console.log('creating messages');
+        const prompt = createMessagesPrompt(req.body).toString();
+        console.log(prompt);
+        const answer = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo",
+            messages: [
+                {
+                    role: "user",
+                    content: prompt,
+                },
+            ],
+        });
+
+        const repaired = jsonrepair(answer.data.choices[0].message.content);
+        const parsed = JSON.parse(repaired);
+        console.log(parsed);
+        res.json({ data: parsed });
+    })
+);
+
 
 // Error Handling
 app.use(errorLogger);
