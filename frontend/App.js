@@ -1,13 +1,14 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { SafeAreaView, StyleSheet, Text } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 import Header from "./components/header";
+import HomeScreen from "./screens/homeScreen";
 
 export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <Header />
-      <Text>Open up App.js to start working on your amazing app!</Text>
+      <HomeScreen/>
       <StatusBar style="auto" />
     </SafeAreaView>
   );
