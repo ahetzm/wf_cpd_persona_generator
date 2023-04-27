@@ -1,21 +1,16 @@
-import { NavigationProp } from "@react-navigation/native";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
+import { DetailScreenProps } from "../models/Props";
 
-type DetailScreenProps = {
-  navigation: NavigationProp<Record<string, object | undefined>>;
-  persona: any;
-};
-
-const DetailScreen: React.FC<any> = ({ navigation, persona }) => {
+const DetailScreen: React.FC<DetailScreenProps> = ({ navigation, person }) => {
   return (
     <View>
       <Image
-        source={{ uri: persona?.imageUri }}
+        source={{ uri: person.imageUri }}
         style={{ width: 200, height: 200 }}
       />
-      <Text>{persona?.name}</Text>
-      <Text>{persona?.age} years old</Text>
+      <Text>{person.name}</Text>
+      <Text>{person.age} years old</Text>
     </View>
   );
 };

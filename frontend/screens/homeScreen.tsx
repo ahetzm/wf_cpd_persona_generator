@@ -1,14 +1,12 @@
-import { NavigationProp } from '@react-navigation/native';
 import React from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import Card from "../components/card";
+import { Person } from "../models/Person";
+import { HomeScreenProps } from "../models/Props";
 
-interface Person {
-  id: number;
-  name: string;
-  age: number;
-  imageUri: string;
-}
+export type Props = {
+
+};
 
 const persons: Person[] = [
   {
@@ -48,10 +46,6 @@ const persons: Person[] = [
     imageUri: "https://randomuser.me/api/portraits/men/5.jpg",
   },
 ];
-
-type HomeScreenProps = {
-  navigation: NavigationProp<Record<string, object | undefined>>;
-};
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const handleCardPress = (person: Person) => {
