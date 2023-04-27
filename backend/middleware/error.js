@@ -9,8 +9,7 @@ export function invalidPathHandler(req, res, next) {
 }
 
 export function errorLogger(err, req, res, next) {
-    console.log('❌ ' + new Date().toISOString() + ' - ' + err.name + ": " + err.message);
-    // console.log('❌ ' + new Date().toISOString(), err);
+    console.log('❌ ' + new Date().toISOString(), err);
     if (next) {
         next(err, req, res, next);
     }
