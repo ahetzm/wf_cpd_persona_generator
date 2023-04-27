@@ -1,26 +1,23 @@
 import { useRoute } from "@react-navigation/native";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
+import { DetailsScreenRouteProp } from "../models/NavigationTypes";
 
 const DetailScreen = () => {
-  const route = useRoute();
+  const route = useRoute<DetailsScreenRouteProp>();
   const { person } = route.params;
 
   return (
-    <View>
-      <Image
-        source={{ uri: person.imageUri }}
-        style={{ width: 200, height: 200 }}
-      />
-      <Text>{person.name}</Text>
-      <Text>{person.age} years old</Text>
+    <View style={styles.container}>
+      <Image source={{ uri: person.imageUri }} style={styles.image} />
+      <Text style={styles.name}>{person.name}</Text>
+      <Text style={styles.age}>{person.age} years old</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -28,24 +25,14 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 100,
-    marginBottom: 20,
-  },
-  textContainer: {
-    alignItems: "center",
+    marginBottom: 10,
   },
   name: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 10,
   },
   age: {
     fontSize: 18,
-    marginBottom: 10,
-  },
-  bio: {
-    fontSize: 16,
-    textAlign: "center",
-    marginHorizontal: 20,
   },
 });
 

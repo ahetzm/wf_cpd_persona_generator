@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import Card from "../components/card";
+import { HomeScreenNavigationProp } from "../models/NavigationTypes";
 import { Person } from "../models/Person";
 
 const persons: Person[] = [
@@ -44,7 +45,8 @@ const persons: Person[] = [
 ];
 
 const HomeScreen = () => {
-  const navigation = useNavigation();
+  // const navigation = useNavigation<HomeScreenNavigationProp>();
+  const navigation = useNavigation<HomeScreenNavigationProp>();
 
   return (
     <View style={styles.container}>
