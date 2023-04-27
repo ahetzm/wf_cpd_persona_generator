@@ -81,3 +81,4 @@ buck-out/
 /tmp
 /out-tsc
 /bazel-out
+.env
