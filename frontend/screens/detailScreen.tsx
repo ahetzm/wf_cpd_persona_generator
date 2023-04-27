@@ -1,8 +1,11 @@
+import { useRoute } from "@react-navigation/native";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-import { DetailScreenProps } from "../models/Props";
 
-const DetailScreen: React.FC<DetailScreenProps> = ({ navigation, person }) => {
+const DetailScreen = () => {
+  const route = useRoute();
+  const { person } = route.params;
+
   return (
     <View>
       <Image

@@ -1,12 +1,8 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import Card from "../components/card";
 import { Person } from "../models/Person";
-import { HomeScreenProps } from "../models/Props";
-
-export type Props = {
-
-};
 
 const persons: Person[] = [
   {
@@ -47,10 +43,8 @@ const persons: Person[] = [
   },
 ];
 
-const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
-  const handleCardPress = (person: Person) => {
-    navigation.navigate("PersonDetail", { navigation, person });
-  };
+const HomeScreen = () => {
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -58,7 +52,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         {persons.map((person) => (
           <TouchableOpacity
             key={person.id}
-            onPress={() => handleCardPress(person)}
+            onPress={() => navigation.navigate("Details", { person: person })}
           >
             <Card
               name={person.name}
