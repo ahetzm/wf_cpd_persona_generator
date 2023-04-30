@@ -1,20 +1,43 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import Header from './components/header';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import MaterialHeaderButton from './components/headerButton';
+import Login from './components/login';
+import Register from './components/register';
+import './firebaseConfig';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Header/>
-      <Text>Open up App.js to start working on your amazing app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+const Stack = createStackNavigator();
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-});
+const App = () => {
+    return (
+        <NavigationContainer>
+            <Stack.Navigator initialRouteName="Login">
+                <Stack.Screen
+                    name="Login"
+                    component={Login}
+                    options= {({ navigation }) => ({
+                        headerRight: () => (
+                            <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
+                                <Item title="Register" onPress={() => navigation.navigate('Register')} />
+                            </HeaderButtons>
+                        ),
+                    })}
+                />
+                <Stack.Screen
+                    name="Register"
+                    component={Register}
+                    options={({ navigation }) => ({
+                        headerLeft: () => (
+                            <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
+                                <Item title="Login" onPress={() => navigation.navigate('Login')} />
+                            </HeaderButtons>
+                        ),
+                    })}
+                />
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
+};
+
+export default App;
