@@ -47,14 +47,4 @@ export default class PersonaService {
     return response?.data.messages ?? MessageResponseFactory.random().messages;
   }
 
-  public async savePersona(persona: Person): Promise<any> {
-    // Use react native firebase to save the persona to the firestore database
-    
-  }
-
-  public async getUserData(user: { id: number}): Promise<any> {
-    // Use react native firebase to get the user data from the firestore database
-
-  }
-
 }
