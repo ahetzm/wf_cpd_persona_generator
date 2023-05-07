@@ -1,3 +1,5 @@
+import { faker } from '@faker-js/faker';
+
 interface Demographics {
     name: string;
     age: number;
@@ -159,5 +161,89 @@ interface Demographics {
         },
       };
     }
+
+    static random(): PersonaResponse {
+        const personalityTraits = ['Creative', 'Analytical', 'Independent', 'Curious', 'Innovative'];
+        const values = ['Autonomy', 'Personal development', 'Learning', 'Freedom', 'Creativity'];
+        const interests = ['Skiing', 'Hiking', 'Cycling', 'Coding Challenges', 'Reading'];
+        const hobbies = ['Reading tech blogs', 'Attending web development meetups', 'Playing video games', 'Watching movies', 'Playing sports'];
+        const toneOfVoice = ['Concise and straightforward', 'Friendly and informal', 'Professional and polite', 'Casual and humorous', 'Authoritative and formal'];
+    
+        return {
+          data: {
+            demographics: {
+              name: faker.name.fullName(),
+              age: faker.datatype.number({ min: 18, max: 65 }),
+              gender: faker.helpers.arrayElement(['Male', 'Female', 'Non-binary']),
+              location: faker.address.city() + ', ' + faker.address.country(),
+              education: faker.helpers.arrayElement([
+                "Bachelor's degree in Computer Science",
+                "Master's degree in Software Engineering",
+                "Self-taught programmer",
+                "Bootcamp graduate",
+              ]),
+              income: faker.helpers.arrayElement([
+                'Entry-level salary in web development',
+                'Average salary for web developers in the region',
+                'High-paying job in tech industry',
+              ]),
+              marital_status: faker.helpers.arrayElement(['Single', 'Married', 'In a relationship']),
+            },
+            psychographics: {
+              personality_traits: [
+                faker.helpers.arrayElement(personalityTraits),
+                faker.helpers.arrayElement(personalityTraits),
+                faker.helpers.arrayElement(personalityTraits),
+              ],
+              values: [faker.helpers.arrayElement(values), faker.helpers.arrayElement(values)],
+              interests: [
+                faker.helpers.arrayElement(interests),
+                faker.helpers.arrayElement(interests),
+                faker.helpers.arrayElement(interests),
+              ],
+              hobbies: [
+                faker.helpers.arrayElement(hobbies),
+                faker.helpers.arrayElement(hobbies),
+                faker.helpers.arrayElement(hobbies),
+              ],
+              lifestyle: faker.lorem.sentence(),
+              additional_funfact: faker.lorem.sentence(),
+            },
+            behaviors: {
+              purchase_behavior: faker.lorem.sentence(),
+              usage_behavior: faker.lorem.sentence(),
+              brand_loyalty: faker.lorem.sentence(),
+              product_preferences: faker.lorem.sentence(),
+              additional_funfact: faker.lorem.sentence(),
+            },
+            pain_points: {
+              challenges: faker.lorem.sentence(),
+              additional_funfact: faker.lorem.sentence(),
+            },
+            goals: {
+              career_objectives: faker.lorem.sentence(),
+              personal_goals: faker.lorem.sentence(),
+              life_ambitions: faker.lorem.sentence(),
+            },
+            motivations: {
+              desires: faker.lorem.sentence(),
+              fears: faker.lorem.sentence(),
+              passions: [
+                faker.helpers.arrayElement(interests),
+                faker.helpers.arrayElement(interests),
+                faker.helpers.arrayElement(interests),
+              ],
+            },
+            communication_preferences: {
+              preferred_channels: [
+                faker.helpers.arrayElement(['Email', 'Slack', 'In-person meetings']),
+                faker.helpers.arrayElement(['Email', 'Slack', 'In-person meetings']),
+              ],
+              tone_of_voice: faker.helpers.arrayElement(toneOfVoice),
+              preferred_format: faker.helpers.arrayElement(['Written communication', 'Visual aids']),
+            },
+          },
+        };
+      }
   }
   
