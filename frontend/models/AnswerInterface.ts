@@ -1,19 +1,26 @@
 import { PersonaResponse } from './PersonaInterface';
+import {faker} from '@faker-js/faker';
 
 export interface AnswerResponse {
-    data: string;
+    answer: string;
   }
   
  export class AnswerResponseFactory {
     static empty(): AnswerResponse {
       return {
-        data: ""
+        answer: ""
       }
     }
   
     static fromObject(obj: AnswerResponse): AnswerResponse {
       return {
-        data: obj.data
+        answer: obj.answer
+      }
+    }
+
+    static random(): AnswerResponse {
+      return {
+        answer: faker.lorem.sentence(100)
       }
     }
   }

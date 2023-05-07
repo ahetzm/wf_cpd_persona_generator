@@ -3,45 +3,15 @@ import React from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import Card from "../components/card";
 import { HomeScreenNavigationProp } from "../models/NavigationTypes";
-import { Person } from "../models/Person";
+import { Person, PersonFactory } from "../models/Person";
 
 const persons: Person[] = [
-  {
-    id: 1,
-    name: "Alice",
-    age: 25,
-    imageUri: "https://randomuser.me/api/portraits/women/1.jpg",
-  },
-  {
-    id: 2,
-    name: "Bob",
-    age: 30,
-    imageUri: "https://randomuser.me/api/portraits/men/1.jpg",
-  },
-  {
-    id: 3,
-    name: "Charlie",
-    age: 35,
-    imageUri: "https://randomuser.me/api/portraits/men/2.jpg",
-  },
-  {
-    id: 4,
-    name: "Diana",
-    age: 28,
-    imageUri: "https://randomuser.me/api/portraits/women/2.jpg",
-  },
-  {
-    id: 5,
-    name: "Eva",
-    age: 40,
-    imageUri: "https://randomuser.me/api/portraits/women/6.jpg",
-  },
-  {
-    id: 6,
-    name: "Frank",
-    age: 45,
-    imageUri: "https://randomuser.me/api/portraits/men/5.jpg",
-  },
+  PersonFactory.random(),
+  PersonFactory.random(),
+  PersonFactory.random(),
+  PersonFactory.random(),
+  PersonFactory.random(),
+  PersonFactory.random(),
 ];
 
 const HomeScreen = () => {

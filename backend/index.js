@@ -219,7 +219,7 @@ app.post(
         const repaired = jsonrepair(answer.data.choices[0].message.content);
         const parsed = JSON.parse(repaired);
         console.log(parsed);
-        res.json({ data: parsed });
+        res.json(parsed);
     })
 );
 
@@ -236,7 +236,7 @@ app.post(
             size: "1024x1024",
         });
 
-        res.json({ data: response.data.data });
+        res.json({ urls: response.data.data.map((image) => image.url) });
     })
 );
 
@@ -256,7 +256,7 @@ app.post(
             ],
         });
 
-        res.json({ data: answer.data.choices[0].message.content });
+        res.json({ answer: answer.data.choices[0].message.content });
     })
 );
 
@@ -279,10 +279,9 @@ app.post(
         const repaired = jsonrepair(answer.data.choices[0].message.content);
         const parsed = JSON.parse(repaired);
         console.log(parsed);
-        res.json({ data: parsed });
+        res.json(parsed);
     })
 );
-
 
 // Error Handling
 app.use(errorLogger);
@@ -298,3 +297,4 @@ app.listen(port, () => {
     );
     console.log("--- Successfully Initialised NodeJS Backend ---");
 });
+

@@ -1,12 +1,13 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { PersonaRequest, PersonaResponse } from "../models/PersonaInterface";
-import { ImageResponse } from "../models/ImageInterface";
-import { AnswerResponse, PersonaQuestionRequest } from "../models/AnswerInterface";
-import { MessageResponse } from "../models/MessageInterface";
+import { Person } from "../models/Person";
+import { PersonaRequest, PersonaResponse, PersonaResponseFactory } from "../models/PersonaInterface";
+import { ImageResponse, ImageResponseFactory } from "../models/ImageInterface";
+import { AnswerResponse, AnswerResponseFactory, PersonaQuestionRequest } from "../models/AnswerInterface";
+import { MessageResponse, MessageResponseFactory } from "../models/MessageInterface";
 
 export default class PersonaService {
   private axios: AxiosInstance;
-  private baseUrl = "http://localhost:7000";
+  private baseUrl = "http://localhost:7000"; // TODO: Change this to the real backend URL
 
   constructor() {
     this.axios = axios.create({
@@ -19,15 +20,15 @@ export default class PersonaService {
       "/api/persona",
       personaData
     );
-    return response.data;
+    return response?.data ?? PersonaResponseFactory.random();
   }
 
-  public async getImage(personaData: PersonaRequest): Promise<string> {
+  public async getImages(personaData: PersonaRequest): Promise<string[]> {
     const response: AxiosResponse<ImageResponse> = await this.axios.post(
       "/api/images",
       personaData
     );
-    return response.data[0].url;
+    return response?.data.urls ?? ImageResponseFactory.random().urls;
   }
 
   public async getAnswer(personaData: PersonaQuestionRequest): Promise<string> {
@@ -35,7 +36,7 @@ export default class PersonaService {
       "/api/ask",
       personaData
     );
-    return response.data.data;
+    return response?.data.answer ?? AnswerResponseFactory.random().answer;
   }
 
   public async getMessages(personaData: PersonaRequest): Promise<string[]> {
@@ -43,7 +44,17 @@ export default class PersonaService {
       "/api/messages",
       personaData
     );
-    return response.data.data.messages;
+    return response?.data.messages ?? MessageResponseFactory.random().messages;
+  }
+
+  public async savePersona(persona: Person): Promise<any> {
+    // Use react native firebase to save the persona to the firestore database
+    
+  }
+
+  public async getUserData(user: { id: number}): Promise<any> {
+    // Use react native firebase to get the user data from the firestore database
+
   }
 
 }

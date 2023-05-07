@@ -1,17 +1,25 @@
+import { faker } from '@faker-js/faker';
+
 export interface ImageResponse {
-    data: {
-      url: string;
-    }[];
-  }
+      urls: string[];
+}
   
  export class ImageResponseFactory {
     static empty(): ImageResponse {
-      return { data: [] };
+      return { urls: [] };
     }
   
     static fromObject(obj: any): ImageResponse {
-      const data = obj.data.map((item: any) => ({ url: item.url }));
-      return { data };
+      return { urls : [...obj.urls] };
+    }
+
+    static random(): ImageResponse {
+      return { urls: [
+        faker.image.avatar(),
+        faker.image.avatar(),
+        faker.image.avatar(),
+        faker.image.avatar(),
+      ]};
     }
   }
   

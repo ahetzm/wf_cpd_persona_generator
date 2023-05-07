@@ -51,7 +51,6 @@ interface Demographics {
   }
   
   export interface PersonaResponse {
-    data: {
       demographics: Demographics;
       psychographics: Psychographics;
       behaviors: Behaviors;
@@ -59,7 +58,6 @@ interface Demographics {
       goals: Goals;
       motivations: Motivations;
       communication_preferences: CommunicationPreferences;
-    };
   }
 
   export interface PersonaRequest {
@@ -70,9 +68,6 @@ interface Demographics {
     goals: string;
     additional_info: string;
   }
-
-  export interface Persona extends PersonaRequest, PersonaResponse {}
-
   export class PersonaRequestFactory {
     static empty(): PersonaRequest {
       return {
@@ -95,12 +90,22 @@ interface Demographics {
         additional_info: obj.additional_info || '',
       };
     }
+
+    static random(): PersonaRequest {
+        return {
+            purpose_context: faker.helpers.arrayElement(['Product development', 'Marketing', 'Customer support', 'Sales', 'Human resources']),
+            name: faker.name.fullName(),
+            age: faker.datatype.number({ min: 18, max: 65 }).toString(),
+            interests: faker.lorem.words(3),
+            goals: faker.lorem.words(3),
+            additional_info: faker.lorem.words(5),
+        };
+    }
   }
   
   export class PersonaResponseFactory {
     static empty(): PersonaResponse {
       return {
-        data: {
           demographics: {
             name: "",
             age: 0,
@@ -144,21 +149,18 @@ interface Demographics {
             tone_of_voice: "",
             preferred_format: "",
           },
-        },
       };
     }
   
     static fromObject(obj: any): PersonaResponse {
       return {
-        data: {
-          demographics: obj.data.demographics,
-          psychographics: obj.data.psychographics,
-          behaviors: obj.data.behaviors,
-          pain_points: obj.data.pain_points,
-          goals: obj.data.goals,
-          motivations: obj.data.motivations,
-          communication_preferences: obj.data.communication_preferences,
-        },
+          demographics: obj.demographics,
+          psychographics: obj.psychographics,
+          behaviors: obj.behaviors,
+          pain_points: obj.pain_points,
+          goals: obj.goals,
+          motivations: obj.motivations,
+          communication_preferences: obj.communication_preferences,
       };
     }
 
@@ -170,7 +172,6 @@ interface Demographics {
         const toneOfVoice = ['Concise and straightforward', 'Friendly and informal', 'Professional and polite', 'Casual and humorous', 'Authoritative and formal'];
     
         return {
-          data: {
             demographics: {
               name: faker.name.fullName(),
               age: faker.datatype.number({ min: 18, max: 65 }),
@@ -241,9 +242,7 @@ interface Demographics {
               ],
               tone_of_voice: faker.helpers.arrayElement(toneOfVoice),
               preferred_format: faker.helpers.arrayElement(['Written communication', 'Visual aids']),
-            },
           },
         };
       }
   }
-  
