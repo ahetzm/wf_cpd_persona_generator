@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import { jsonrepair } from 'jsonrepair'
-// import cors from 'cors';
+import cors from 'cors';
 import bodyParser from "body-parser";
 import compression from "compression";
 import morgan from "morgan";
@@ -18,7 +18,7 @@ const app = express();
 const morganLogFormat =
     ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":user-agent"';
 app.use(morgan(morganLogFormat));
-// app.use(cors());
+app.use(cors());
 app.use(compression());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

@@ -4,7 +4,7 @@ import { MessageResponse, MessageResponseFactory } from './MessageInterface';
 import { PersonaResponse, PersonaResponseFactory } from './PersonaInterface';
 
 export interface Person extends PersonaResponse, ImageResponse, MessageResponse {
-  id: number;
+  id: string;
   name: string;
   age: string | number;
   interests: string;
@@ -19,7 +19,7 @@ export class PersonFactory {
     const messageResponse: MessageResponse = MessageResponseFactory.empty();
     const personaResponse: PersonaResponse = PersonaResponseFactory.empty();
     const baseData = {
-      id: 0,
+      id: '',
       name: '',
       age: 0,
       interests: '',
@@ -63,7 +63,7 @@ export class PersonFactory {
     const messageResponse: MessageResponse = MessageResponseFactory.random();
     const personaResponse: PersonaResponse = PersonaResponseFactory.random();
     const baseData = {
-      id: faker.datatype.number({ min: 1, max: 100 }),
+      id: faker.datatype.uuid().toString(),
       name: faker.name.fullName(),
       age: faker.datatype.number({ min: 18, max: 65 }),
       interests: faker.lorem.words(3),
