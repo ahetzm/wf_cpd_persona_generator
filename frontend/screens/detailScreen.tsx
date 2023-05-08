@@ -3,7 +3,7 @@ import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { DetailsScreenRouteProp } from "../models/NavigationTypes";
 
-const DetailScreen = () => {
+const DetailScreen: React.FC  = () => {
   const route = useRoute<DetailsScreenRouteProp>();
   const { person } = route.params;
 

@@ -224,7 +224,7 @@ app.post(
 );
 
 app.post(
-    "/api/image",
+    "/api/images",
     wrap(async (req, res, next) => {
         console.log('creating image');
 

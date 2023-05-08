@@ -7,14 +7,21 @@ export type StackNavigatorParamList = {
   Details: {
     person: Person;
   };
+  CreatePersona: undefined;
 };
 
 export type HomeScreenNavigationProp = NativeStackNavigationProp<
   StackNavigatorParamList,
-  "Details"
+  "Details",
+  "CreatePersona"
 >;
 
 export type DetailsScreenRouteProp = RouteProp<
   StackNavigatorParamList,
   "Details"
+>;
+
+export type CreatePersonaScreenRouteProp = RouteProp<
+  StackNavigatorParamList,
+  "CreatePersona"
 >;

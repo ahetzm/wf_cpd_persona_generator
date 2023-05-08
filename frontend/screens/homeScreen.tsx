@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, {useEffect} from "react";
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, TouchableOpacity, View, Text } from "react-native";
 import Card from "../components/card";
 import { HomeScreenNavigationProp } from "../models/NavigationTypes";
 import { getUser } from "../services/firebase";
@@ -20,7 +20,7 @@ const HomeScreen: React.FC = () => {
   // Fetch personas from firebase on component mount
   useEffect(() => {
     fetchPersonas(fakeUserId);
-  }, [persons]);
+  }, [fetchPersonas]);
 
   return (
     <View style={styles.container}>
@@ -38,6 +38,24 @@ const HomeScreen: React.FC = () => {
           </TouchableOpacity>
         ))}
       </ScrollView>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("CreatePersona")}
+        style={{
+          borderWidth: 1,
+          borderColor: 'rgba(0,0,0,0.2)',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: 70,
+          position: 'absolute',
+          bottom: 10,
+          right: 10,
+          height: 70,
+          backgroundColor: '#fff',
+          borderRadius: 100,
+        }}
+        >
+        <Text style={{fontSize: 48}}>+</Text>
+      </TouchableOpacity>
     </View>
   );
 };
