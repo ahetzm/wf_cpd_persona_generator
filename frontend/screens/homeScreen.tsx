@@ -1,37 +1,26 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, {useEffect} from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import Card from "../components/card";
 import { HomeScreenNavigationProp } from "../models/NavigationTypes";
-import { Person, PersonFactory } from "../models/Person";
 import { getUser } from "../services/firebase";
-import PersonaService from "../services/persona-service";
-import { PersonaRequestFactory } from "../models/PersonaInterface";
+import usePersonaService from "../services/persona-service";
 
-const persons: Person[] = [
-  PersonFactory.random(),
-  PersonFactory.random(),
-  PersonFactory.random(),
-  PersonFactory.random(),
-  PersonFactory.random(),
-  PersonFactory.random(),
-];
-
-getUser("86tgh89zg9").then((user) => {
+// Fetch test user from firebase
+const fakeUserId = "86tgh89zg9";
+getUser(fakeUserId).then((user) => {
   console.log(user);
 });
 
-const personaService = new PersonaService();
-
-console.log(personaService);
-
-personaService.createPerson(PersonaRequestFactory.random()).then((person: Person) => {
-  console.log(person);
-});
-
-const HomeScreen = () => {
-  // const navigation = useNavigation<HomeScreenNavigationProp>();
+const HomeScreen: React.FC = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
+
+  const { persons, fetchPersonas } = usePersonaService();
+
+  // Fetch personas from firebase on component mount
+  useEffect(() => {
+    fetchPersonas(fakeUserId);
+  }, [persons]);
 
   return (
     <View style={styles.container}>

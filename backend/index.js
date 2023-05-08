@@ -184,7 +184,7 @@ function createMessagesPrompt(personaData) {
 
     ${JSON.stringify(personaData)}
     
-    Act like the persona i provided you with. Come up with 10 funny and authentic chat messages this persona might send a good friend to tease them, taking into account the special characteristics and fun facts of the persona. Format the 'messages' in  JSON format. Only output the valid JSON.`
+    Act like the persona i provided you with. Come up with 10 funny and authentic chat messages this persona might send a good friend to tease them, taking into account the all the characteristics and fun facts of the persona. Format the 'messages' in  JSON format. Only output the valid JSON.`
 }
 
 // Routes

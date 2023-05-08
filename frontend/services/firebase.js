@@ -32,7 +32,7 @@ const app = initializeApp(firebase);
 export const db = getFirestore(app);
 
 
-setLogLevel("debug");
+// setLogLevel("debug");
 
 
 //----------------------------------------------------------------
@@ -134,6 +134,10 @@ export async function savePersona(userId, persona) {
 
 export async function deletePersona(userId, personaId) {
     await deleteDoc(doc(db, `user/${userId}/personas`, personaId));
+}
+
+export async function getPersonas(userId) {
+    return getDataFromQuery(`user/${userId}/personas`);
 }
 
 export function initWatchingFirebase(query, handler) {
