@@ -49,39 +49,39 @@ const DetailScreen: React.FC  = () => {
 
       <Chat chatTitle={person.name} onSend={onSendHandler} messages={messages} writingBack={writingBack} />
 
-      <Text>Demographics</Text>
-      <Text>{person.demographics.location}</Text>
-      <Text>{person.demographics.gender}</Text>
-      <Text>{person.demographics.education}</Text>
-      <Text>{person.demographics.income}</Text>
-      <Text>{person.demographics.marital_status}</Text>
+      <Text style={styles.sectionTitle}>Demographics</Text>
+      <Text style={styles.value}>{person.demographics.location}</Text>
+      <Text style={styles.value}>{person.demographics.gender}</Text>
+      <Text style={styles.value}>{person.demographics.education}</Text>
+      <Text style={styles.value}>{person.demographics.income}</Text>
+      <Text style={styles.value}>{person.demographics.marital_status}</Text>
 
-      <Text>Psychographics</Text>
-      <Text>{person.psychographics.interests.join(', ')}</Text>
-      <Text>{person.psychographics.hobbies.join(', ')}</Text>
-      <Text>{person.psychographics.lifestyle}</Text>
-      <Text>{person.psychographics.personality_traits.join(', ')}</Text>
-      <Text>{person.psychographics.values.join(', ')}</Text>
-      <Text>{person.psychographics.additional_funfact}</Text>
+      <Text style={styles.sectionTitle}>Psychographics</Text>
+      <Text style={styles.value}>{person.psychographics.interests.join(', ')}</Text>
+      <Text style={styles.value}>{person.psychographics.hobbies.join(', ')}</Text>
+      <Text style={styles.value}>{person.psychographics.lifestyle}</Text>
+      <Text style={styles.value}>{person.psychographics.personality_traits.join(', ')}</Text>
+      <Text style={styles.value}>{person.psychographics.values.join(', ')}</Text>
+      <Text style={styles.value}>{person.psychographics.additional_funfact}</Text>
 
-      <Text>Goals</Text>
-      <Text>{person.goals.career_objectives}</Text>
-      <Text>{person.goals.life_ambitions}</Text>
-      <Text>{person.goals.personal_goals}</Text>
+      <Text style={styles.sectionTitle}>Goals</Text>
+      <Text style={styles.value}>{person.goals.career_objectives}</Text>
+      <Text style={styles.value}>{person.goals.life_ambitions}</Text>
+      <Text style={styles.value}>{person.goals.personal_goals}</Text>
 
-      <Text>Challenges</Text>
-      <Text>{person.pain_points.challenges}</Text>
-      <Text>{person.pain_points.additional_funfact}</Text>
+      <Text style={styles.sectionTitle}>Challenges</Text>
+      <Text style={styles.value}>{person.pain_points.challenges}</Text>
+      <Text style={styles.value}>{person.pain_points.additional_funfact}</Text>
 
-      <Text>Motivations</Text>
-      <Text>{person.motivations.desires}</Text>
-      <Text>{person.motivations.fears}</Text>
-      <Text>{person.motivations.passions}</Text>
+      <Text style={styles.sectionTitle}>Motivations</Text>
+      <Text style={styles.value}>{person.motivations.desires}</Text>
+      <Text style={styles.value}>{person.motivations.fears}</Text>
+      <Text style={styles.value}>{person.motivations.passions}</Text>
 
-      <Text>Communication Preferences</Text>
-      <Text>{person.communication_preferences.preferred_channels.join(', ')}</Text>
-      <Text>{person.communication_preferences.preferred_format}</Text>
-      <Text>{person.communication_preferences.tone_of_voice}</Text>
+      <Text style={styles.sectionTitle}>Communication Preferences</Text>
+      <Text style={styles.value}>{person.communication_preferences.preferred_channels.join(', ')}</Text>
+      <Text style={styles.value}>{person.communication_preferences.preferred_format}</Text>
+      <Text style={styles.value}>{person.communication_preferences.tone_of_voice}</Text>
     </View>
   );
 };
@@ -103,6 +103,19 @@ const styles = StyleSheet.create({
   },
   age: {
     fontSize: 18,
+  },
+
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  label: {
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  value: {
+    marginBottom: 20,
   },
 });
 
