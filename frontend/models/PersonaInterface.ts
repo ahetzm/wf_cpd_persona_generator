@@ -153,15 +153,36 @@ interface Demographics {
     }
   
     static fromObject(obj: any): PersonaResponse {
-      return {
-          demographics: obj.demographics,
-          psychographics: obj.psychographics,
-          behaviors: obj.behaviors,
-          pain_points: obj.pain_points,
-          goals: obj.goals,
-          motivations: obj.motivations,
-          communication_preferences: obj.communication_preferences,
-      };
+
+      // create an empty object
+      // loop through the keys of the object
+      // if key of param is in obj, add it to the empty object
+      // if value of empty object is an array ensure that the param object value is turned into an array
+      // if value of empty object is a string ensure that the value object is turned into a string
+
+      const newPersona = PersonaResponseFactory.empty();	
+
+      Object.keys(newPersona).forEach((topicKey) => {
+
+        // @ts-ignore
+        const topicEmpty = newPersona[topicKey];
+
+        topicEmpty.forEach((key: string) => {
+          if (!obj[topicKey]) return;
+
+          if (Array.isArray(topicEmpty[key])) {
+            // @ts-ignore
+            newPersona[topicKey][key] = Array.isArray(obj[topicKey][key]) ? obj[topicKey][key] : obj[topicKey][key].split(',');
+          }          
+          else {
+            // @ts-ignore
+            newPersona[topicKey][key] = Array.isArray(obj[topicKey][key]) ? obj[topicKey][key].join(',') : obj[topicKey][key].toString();
+          }
+        });
+      });
+
+
+      return newPersona;
     }
 
     static random(): PersonaResponse {

@@ -19,19 +19,18 @@ export default function usePersonaService() {
   const [persons, setPersons] = useState<Person[]>([]);
 
   const fetchPersonas = useCallback(async (userId: string): Promise<void> => {
-    // const fetchedPersonas: Person[] = await getPersonas(userId = fakeUserId);
-    // console.log('fetchedPersonas', fetchedPersonas);
+    const fetchedPersonas = await getPersonas(userId = fakeUserId);
 
-    const fakePersons: Person[] = [
-      PersonFactory.random(),
-      PersonFactory.random(),
-      PersonFactory.random(),
-      PersonFactory.random(),
-      PersonFactory.random(),
-      PersonFactory.random(),
-    ];
+    // const fakePersons: Person[] = [
+    //   PersonFactory.random(),
+    //   PersonFactory.random(),
+    //   PersonFactory.random(),
+    //   PersonFactory.random(),
+    //   PersonFactory.random(),
+    //   PersonFactory.random(),
+    // ];
 
-    setPersons(fakePersons);
+    setPersons(fetchedPersonas);
   }, []);
 
   const createPerson = useCallback(async (personaData: PersonaRequest): Promise<Person> => {
@@ -68,7 +67,7 @@ export default function usePersonaService() {
   const generatePersona = useCallback(async (personaData: PersonaRequest): Promise<PersonaResponse> => {
     try {
       const response: AxiosResponse<PersonaResponse> = await axiosInstance.post('/api/persona', personaData);
-      return response?.data ?? PersonaResponseFactory.random();
+      return PersonaResponseFactory.fromObject(response?.data);
     } catch (error) {
       console.log(error);
     }

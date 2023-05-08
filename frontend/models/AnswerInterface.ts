@@ -25,7 +25,8 @@ export interface AnswerResponse {
     }
   }
 
-  export interface PersonaQuestionRequest extends PersonaResponse {
+  export interface PersonaQuestionRequest {
+    data: PersonaResponse
     question: string;
   }
   
