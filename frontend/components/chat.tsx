@@ -1,25 +1,67 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import usePersonaService from "../services/persona-service";
+import { PersonaQuestionRequest } from "../models/AnswerInterface";
+import { getMessages, getRandId, saveMessage } from "../services/firebase";
+import { Person } from '../models/Person';
 
 export type ChatMessage = {
   id: string;
   message: string;
   isUser: boolean;
+  timestamp: number
 };
 
 type Props = {
-  chatTitle: string;
-  onSend: (message: string) => void;
-  messages: ChatMessage[];
-  writingBack: boolean;
+  persona: Person;
 };
 
-const Chat: React.FC<Props> = ({ onSend, messages, writingBack }) => {
-  const [text, setText] = useState('');
+// TODO Fetch test user from firebase
+const fakeUserId = "86tgh89zg9";
 
-  const handleSend = () => {
-    onSend(text);
+const Chat: React.FC<Props> = ({ persona }) => {
+  const [text, setText] = useState<string>('');
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [writingBack, setWritingBack] = useState<boolean>(false);
+  
+  const {getAnswer} = usePersonaService();
+ 
+  const fetchMessages = async () => {
+    const fetchedMessages: ChatMessage[] = await getMessages(fakeUserId, persona.id) ?? [];
+    console.log(fetchedMessages);
+    fetchedMessages.sort((a, b) => a.timestamp + b.timestamp);
+    
+    setMessages(fetchedMessages);
+  }
+
+  useEffect(() => {
+    // @ts-ignore
+    fetchMessages();
+  }, []);
+
+  const onSendHandler = async () => {
+    console.log(text);
+    const newMessage: ChatMessage = { message: text, id: getRandId(), isUser: true, timestamp: (new Date()).getTime() };
+    setMessages((prevMessages) => [ newMessage, ...prevMessages ]);
+    saveMessage(fakeUserId, persona.id, newMessage);
+    
+    getAnswerHandler(text).then(console.log).catch(console.error);
     setText('');
+  };
+
+  const getAnswerHandler = async (message: string) => {
+    setWritingBack(true);
+    const answerRequest: PersonaQuestionRequest = { question: message, data: persona };
+    const answer = await getAnswer(answerRequest);
+  
+    const newMessage: ChatMessage = { message: answer, id: getRandId(), isUser: false, timestamp: (new Date()).getTime()  };
+    
+    setWritingBack(false);
+    saveMessage(fakeUserId, persona.id, newMessage);
+
+    setMessages((prevMessages) => [ newMessage, ...prevMessages ]);
+    
+    return answer;
   };
 
   const renderMessage = ({ item }: { item: ChatMessage }) => {
@@ -50,7 +92,7 @@ const Chat: React.FC<Props> = ({ onSend, messages, writingBack }) => {
           multiline={true}
           maxLength={200}
         />
-        <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
+        <TouchableOpacity style={styles.sendButton} onPress={onSendHandler}>
           <Text style={styles.sendButtonText}>Send</Text>
         </TouchableOpacity>
       </View>

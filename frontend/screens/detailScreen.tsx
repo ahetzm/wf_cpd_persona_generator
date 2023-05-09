@@ -3,41 +3,11 @@ import React, {useState} from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { DetailsScreenRouteProp } from "../models/NavigationTypes";
 import ImagePicker from "../components/imagePicker";
-import Chat, {ChatMessage} from "../components/chat";
-import usePersonaService from "../services/persona-service";
-import { PersonaQuestionRequest } from "../models/AnswerInterface";
-import { getRandId } from "../services/firebase";
+import Chat from "../components/chat";
 
 const DetailScreen: React.FC  = () => {
   const route = useRoute<DetailsScreenRouteProp>();
   const { person } = route.params;
-
-  const {getAnswer} = usePersonaService();
-
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [writingBack, setWritingBack] = useState<boolean>(false);
-
-  const onSendHandler = async (message: string) => {
-    const newMessage: ChatMessage = { message, id: getRandId(), isUser: true };
-    setMessages((prevMessages) => [ newMessage, ...prevMessages ]);
-    getAnswerHandler(message).then(console.log).catch(console.error);
-  };
-
-  const getAnswerHandler = async (message: string) => {
-    setWritingBack(true);
-    const answerRequest: PersonaQuestionRequest = { question: message, data: person };
-    const answer = await getAnswer(answerRequest);
-  
-    const newMessage: ChatMessage = { message: answer, id: getRandId(), isUser: false };
-    
-  
-    setWritingBack(false);
-    setMessages((prevMessages) => [ newMessage, ...prevMessages ]);
-    
-    return answer;
-  };
-
-
 
   return (
     <View style={styles.container}>
@@ -47,7 +17,7 @@ const DetailScreen: React.FC  = () => {
 
       <ImagePicker images={person.urls} onSelect={(url) => {console.log(url)}} />
 
-      <Chat chatTitle={person.name} onSend={onSendHandler} messages={messages} writingBack={writingBack} />
+      <Chat persona={person} />
 
       <Text style={styles.sectionTitle}>Demographics</Text>
       <Text style={styles.value}>{person.demographics.location}</Text>

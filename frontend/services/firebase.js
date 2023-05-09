@@ -127,6 +127,14 @@ export async function saveUser(user) {
     await setData(user, "user", userId);
 }
 
+export async function saveMessage(userId, personaId, message) {
+    await setData(message, 'user', userId, 'personas', personaId, 'messages', message.id);
+}
+
+export async function getMessages(userId, personaId) {
+    return getDataFromQuery(`user/${userId}/personas/${personaId}/messages`);
+}
+
 export async function savePersona(userId, persona) {
     const personaId = persona.id;
     await setData(persona, `user/${userId}/personas`, personaId);
