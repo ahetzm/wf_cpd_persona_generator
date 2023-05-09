@@ -57,7 +57,7 @@ export default function usePersonaService() {
       imageUri: imageResponse[0],
     };
 
-    setPersons([...persons, newPerson]);
+    setPersons((persons) => [newPerson, ...persons]);
     savePersona(fakeUserId, newPerson); // TODO: Change this to the real user ID
 
     return newPerson;

@@ -160,14 +160,17 @@ interface Demographics {
       // if value of empty object is an array ensure that the param object value is turned into an array
       // if value of empty object is a string ensure that the value object is turned into a string
 
-      const newPersona = PersonaResponseFactory.empty();	
+      
+      if(!obj) return PersonaResponseFactory.random();
+      
+      const newPersona: PersonaResponse = PersonaResponseFactory.empty();
 
       Object.keys(newPersona).forEach((topicKey) => {
 
         // @ts-ignore
         const topicEmpty = newPersona[topicKey];
 
-        topicEmpty.forEach((key: string) => {
+        Object.keys(topicEmpty).forEach((key: string) => {
           if (!obj[topicKey]) return;
 
           if (Array.isArray(topicEmpty[key])) {
