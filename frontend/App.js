@@ -6,6 +6,7 @@ import { SafeAreaView, StyleSheet } from "react-native";
 import DetailsScreen from "./screens/detailScreen";
 import HomeScreen from "./screens/homeScreen";
 import CreatePersonaScreen from "./screens/createPersonaScreen";
+import ChatScreen from "./screens/chatScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ export default function App() {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Details" component={DetailsScreen} />
           <Stack.Screen name="CreatePersona" component={CreatePersonaScreen} />
+          <Stack.Screen name="Chat" component={ChatScreen} />
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar style="auto" />

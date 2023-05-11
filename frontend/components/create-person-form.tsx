@@ -100,6 +100,9 @@ const CreatePersonForm: React.FC<any> = () => {
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
+
+      {/* <ImagePicker images={person.urls} onSelect={(url) => {console.log(url)}} /> */}
+
     </View>
   );
 };
