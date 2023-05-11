@@ -63,7 +63,7 @@ const HomeScreen: React.FC = () => {
         onPress={() => navigation.navigate("CreatePersona")}
         style={{
           borderWidth: 1,
-          borderColor: 'rgba(f,f,f,0.2)',
+          borderColor: '#fff',
           alignItems: 'center',
           justifyContent: 'center',
           width: 70,
@@ -75,7 +75,7 @@ const HomeScreen: React.FC = () => {
           borderRadius: 100,
         }}
         >
-        <Text style={{fontSize: 48, lineHeight: 1, color: '#fff'}}>+</Text>
+        <Text style={{fontSize: 48, lineHeight: 1, color: '#fff', marginBottom: 7}}>+</Text>
       </TouchableOpacity>
     </View>
   );
