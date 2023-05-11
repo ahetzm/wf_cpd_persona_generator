@@ -5,6 +5,7 @@ import Card from "../components/card";
 import { HomeScreenNavigationProp } from "../models/NavigationTypes";
 import { getUser } from "../services/firebase";
 import usePersonaService from "../services/persona-service";
+// import * as Notifications from 'expo-notifications';
 
 // Fetch test user from firebase
 const fakeUserId = "86tgh89zg9";
@@ -21,6 +22,26 @@ const HomeScreen: React.FC = () => {
   useEffect(() => {
     fetchPersonas(fakeUserId);
   }, [fetchPersonas]);
+
+
+  // // First, set the handler that will cause the notification
+  // // to show the alert
+  // Notifications.setNotificationHandler({
+  //   handleNotification: async () => ({
+  //     shouldShowAlert: true,
+  //     shouldPlaySound: false,
+  //     shouldSetBadge: false,
+  //   }),
+  // });
+
+  // // Second, call the method
+  // Notifications.scheduleNotificationAsync({
+  //   content: {
+  //     title: 'Look at that notification',
+  //     body: "I'm so proud of myself!",
+  //   },
+  //   trigger: null,
+  // });
 
   return (
     <View style={styles.container}>
@@ -42,7 +63,7 @@ const HomeScreen: React.FC = () => {
         onPress={() => navigation.navigate("CreatePersona")}
         style={{
           borderWidth: 1,
-          borderColor: 'rgba(0,0,0,0.2)',
+          borderColor: 'rgba(f,f,f,0.2)',
           alignItems: 'center',
           justifyContent: 'center',
           width: 70,
@@ -50,11 +71,11 @@ const HomeScreen: React.FC = () => {
           bottom: 10,
           right: 10,
           height: 70,
-          backgroundColor: '#fff',
+          backgroundColor: '#4BB543',
           borderRadius: 100,
         }}
         >
-        <Text style={{fontSize: 48}}>+</Text>
+        <Text style={{fontSize: 48, lineHeight: 1, color: '#fff'}}>+</Text>
       </TouchableOpacity>
     </View>
   );
