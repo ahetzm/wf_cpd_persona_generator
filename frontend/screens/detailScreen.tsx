@@ -85,7 +85,7 @@ const DetailScreen: React.FC  = () => {
         onPress={() => navigation.navigate("Chat", {person: person})}
         style={{
           borderWidth: 1,
-          borderColor: 'rgba(0,0,0,0.2)',
+          borderColor: '#fff',
           alignItems: 'center',
           justifyContent: 'center',
           width: 70,
@@ -93,11 +93,11 @@ const DetailScreen: React.FC  = () => {
           bottom: 10,
           right: 10,
           height: 70,
-          backgroundColor: '#fff',
+          backgroundColor: '#4BB543',
           borderRadius: 100,
         }}
         >
-        <Text style={{fontSize: 24}}>Chat</Text>
+        <Text style={{fontSize: 24, lineHeight: 1, color: '#fff'}}>Ask</Text>
       </TouchableOpacity>
     </View>
     
