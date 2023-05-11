@@ -1,65 +1,125 @@
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import React, {useState} from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
-import { DetailsScreenRouteProp } from "../models/NavigationTypes";
-import ImagePicker from "../components/imagePicker";
-import Chat from "../components/chat";
+import { Image, ScrollView, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { DetailsScreenRouteProp, HomeScreenNavigationProp } from "../models/NavigationTypes";
+import Badge from "../components/badge";
 
 const DetailScreen: React.FC  = () => {
+  const navigation = useNavigation<HomeScreenNavigationProp>();
   const route = useRoute<DetailsScreenRouteProp>();
   const { person } = route.params;
 
   return (
-    <View style={styles.container}>
-      <Image source={{ uri: person.imageUri }} style={styles.image} />
-      <Text style={styles.name}>{person.name}</Text>
-      <Text style={styles.age}>{person.age} years old</Text>
+    <View style={styles.main}>
+        <ScrollView>
+        <View style={styles.container}>
+          <Image source={{ uri: person.imageUri }} style={styles.image} />
+          <Text style={styles.name}>{person.name}</Text>
+          <Text style={styles.age}>{person.age} years old, {person.demographics.gender}</Text>
+          <Text style={styles.age}>{person.demographics.location}</Text>
 
-      <ImagePicker images={person.urls} onSelect={(url) => {console.log(url)}} />
+          <View style={styles.detailsContainer}>
+          <Text style={styles.sectionTitle}>Demographics</Text>
+          <Text style={styles.value}>Education: {person.demographics.education}</Text>
+          <Text style={styles.value}>Income: {person.demographics.income}</Text>
+          <Text style={styles.value}>{person.demographics.marital_status}</Text>
 
-      <Chat persona={person} />
+          <Text style={styles.sectionTitle}>Psychographics</Text>
+          {/* <Text style={styles.value}>{person.psychographics.interests.join(', ')}</Text> */}
+          <View style={{flexDirection: 'row'}}>
+            <Text>Interests: </Text>
+            {person.psychographics.interests.map((interest) => {
+              return <Badge text={interest} key={interest} />;
+            })}
+          </View>
+          {/* <Text style={styles.value}>{person.psychographics.hobbies.join(', ')}</Text> */}
+          <View style={{flexDirection: 'row'}}>
+            <Text>Hobbies: </Text>
+            {person.psychographics.hobbies.map((hobby) => {
+              return <Badge text={hobby} key={hobby} />;
+            })}
+          </View>
+          
+          <Text style={styles.value}>Lifestyle: {person.psychographics.lifestyle}</Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text>Personality traits: </Text>
+            {person.psychographics.personality_traits.map((trait) => {
+              return <Badge text={trait} key={trait} />;
+            })}
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text>Values: </Text>
+            {person.psychographics.values.map((value) => {
+              return <Badge text={value} key={value} />;
+            })}
+          </View>
+          <Text style={styles.value}>{person.psychographics.additional_funfact}</Text>
 
-      <Text style={styles.sectionTitle}>Demographics</Text>
-      <Text style={styles.value}>{person.demographics.location}</Text>
-      <Text style={styles.value}>{person.demographics.gender}</Text>
-      <Text style={styles.value}>{person.demographics.education}</Text>
-      <Text style={styles.value}>{person.demographics.income}</Text>
-      <Text style={styles.value}>{person.demographics.marital_status}</Text>
+          <Text style={styles.sectionTitle}>Goals</Text>
+          <Text style={styles.value}>Career objectives: {person.goals.career_objectives}</Text>
+          <Text style={styles.value}>Life Ambitions: {person.goals.life_ambitions}</Text>
+          <Text style={styles.value}>Goals: {person.goals.personal_goals}</Text>
 
-      <Text style={styles.sectionTitle}>Psychographics</Text>
-      <Text style={styles.value}>{person.psychographics.interests.join(', ')}</Text>
-      <Text style={styles.value}>{person.psychographics.hobbies.join(', ')}</Text>
-      <Text style={styles.value}>{person.psychographics.lifestyle}</Text>
-      <Text style={styles.value}>{person.psychographics.personality_traits.join(', ')}</Text>
-      <Text style={styles.value}>{person.psychographics.values.join(', ')}</Text>
-      <Text style={styles.value}>{person.psychographics.additional_funfact}</Text>
+          <Text style={styles.sectionTitle}>Challenges</Text>
+          <Text style={styles.value}>Challenges: {person.pain_points.challenges}</Text>
+          <Text style={styles.value}>Facts: {person.pain_points.additional_funfact}</Text>
 
-      <Text style={styles.sectionTitle}>Goals</Text>
-      <Text style={styles.value}>{person.goals.career_objectives}</Text>
-      <Text style={styles.value}>{person.goals.life_ambitions}</Text>
-      <Text style={styles.value}>{person.goals.personal_goals}</Text>
+          <Text style={styles.sectionTitle}>Motivations</Text>
+          <Text style={styles.value}>Desires: {person.motivations.desires}</Text>
+          <Text style={styles.value}>Dears: {person.motivations.fears}</Text>
+          <Text style={styles.value}>Passions: {person.motivations.passions}</Text>
 
-      <Text style={styles.sectionTitle}>Challenges</Text>
-      <Text style={styles.value}>{person.pain_points.challenges}</Text>
-      <Text style={styles.value}>{person.pain_points.additional_funfact}</Text>
-
-      <Text style={styles.sectionTitle}>Motivations</Text>
-      <Text style={styles.value}>{person.motivations.desires}</Text>
-      <Text style={styles.value}>{person.motivations.fears}</Text>
-      <Text style={styles.value}>{person.motivations.passions}</Text>
-
-      <Text style={styles.sectionTitle}>Communication Preferences</Text>
-      <Text style={styles.value}>{person.communication_preferences.preferred_channels.join(', ')}</Text>
-      <Text style={styles.value}>{person.communication_preferences.preferred_format}</Text>
-      <Text style={styles.value}>{person.communication_preferences.tone_of_voice}</Text>
+          <Text style={styles.sectionTitle}>Communication Preferences</Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text>Preferred communication channels: </Text>
+            {person.communication_preferences.preferred_channels.map((channel) => {
+              return (<Badge text={channel} key={channel} />)
+            })}
+          </View>
+          <Text style={styles.value}>Preferred format: {person.communication_preferences.preferred_format}</Text>
+          <Text style={styles.value}>Tone of voice: {person.communication_preferences.tone_of_voice}</Text>
+        </View>
+      </View>
+      </ScrollView>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Chat", {person: person})}
+        style={{
+          borderWidth: 1,
+          borderColor: 'rgba(0,0,0,0.2)',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: 70,
+          position: 'absolute',
+          bottom: 10,
+          right: 10,
+          height: 70,
+          backgroundColor: '#fff',
+          borderRadius: 100,
+        }}
+        >
+        <Text style={{fontSize: 24}}>Chat</Text>
+      </TouchableOpacity>
     </View>
+    
   );
 };
 
 const styles = StyleSheet.create({
+
+  main: {
+    flex: 1,
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    padding: 10,
+  },
+
   container: {
     alignItems: "center",
     justifyContent: "center",
+  },
+  detailsContainer: {
+    justifyContent: "flex-start",
+    padding: 20,
   },
   image: {
     width: 200,
@@ -85,7 +145,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   value: {
-    marginBottom: 20,
+    marginBottom: 10,
   },
 });
 

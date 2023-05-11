@@ -31,6 +31,8 @@ const app = initializeApp(firebase);
 
 export const db = getFirestore(app);
 
+console.log("Firebase initialized");
+
 
 // setLogLevel("debug");
 

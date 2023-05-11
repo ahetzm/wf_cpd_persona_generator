@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
 type Props = {
   images: string[];
@@ -14,18 +14,53 @@ const ImagePicker: React.FC<Props> = ({ images, onSelect }) => {
     onSelect(image);
   };
 
+  const pairs = [];
+  for (let i = 0; i < images.length; i += 2) {
+    const pair = [images[i], images[i + 1]];
+    pairs.push(pair);
+  }
+
   return (
-    <View>
-      {images.map((image, index) => (
-        <TouchableOpacity key={index} onPress={() => handleImagePress(image)}>
-          <Image
-            source={{ uri: image }}
-            style={{ width: 100, height: 100, margin: 10, borderColor: 'black', borderWidth: selectedImage === image ? 2 : 0 }}
-          />
-        </TouchableOpacity>
+    <>
+      {pairs.map((pair, index) => (
+        <View key={index} style={styles.imageContainer}>
+          <TouchableOpacity onPress={() => handleImagePress(pair[0])}>
+            <Image
+              source={{ uri: pair[0] }}
+              style={[styles.image, selectedImage === pair[0] && styles.selectedImage]}
+            />
+          </TouchableOpacity>
+          {pair[1] && (
+            <TouchableOpacity onPress={() => handleImagePress(pair[1])}>
+              <Image
+                source={{ uri: pair[1] }}
+                style={[styles.image, selectedImage === pair[1] && styles.selectedImage]}
+              />
+            </TouchableOpacity>
+          )}
+        </View>
       ))}
-    </View>
+    </>
   );
 };
 
 export default ImagePicker;
+
+const styles = StyleSheet.create({
+  imageContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    margin: 10,
+    borderColor: 'black',
+    borderWidth: 0,
+  },
+  selectedImage: {
+    borderWidth: 2,
+  },
+});

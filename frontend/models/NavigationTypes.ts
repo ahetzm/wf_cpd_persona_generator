@@ -8,6 +8,9 @@ export type StackNavigatorParamList = {
     person: Person;
   };
   CreatePersona: undefined;
+  Chat: {
+    person: Person;
+  }
 };
 
 export type HomeScreenNavigationProp = NativeStackNavigationProp<
@@ -19,6 +22,11 @@ export type HomeScreenNavigationProp = NativeStackNavigationProp<
 export type DetailsScreenRouteProp = RouteProp<
   StackNavigatorParamList,
   "Details"
+>;
+
+export type ChatScreenRouteProp = RouteProp<
+  StackNavigatorParamList,
+  "Chat"
 >;
 
 export type CreatePersonaScreenRouteProp = RouteProp<

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, ScrollView, Image } from 'react-native';
 import usePersonaService from "../services/persona-service";
 import { PersonaQuestionRequest } from "../models/AnswerInterface";
 import { getMessages, getRandId, saveMessage } from "../services/firebase";
@@ -74,14 +74,26 @@ const Chat: React.FC<Props> = ({ persona }) => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={messages}
-        renderItem={renderMessage}
-        keyExtractor={(item) => item.id.toString()}
-        inverted={true}
-        style={styles.messages}
-      />
-      { writingBack ? <Text>Writing back...</Text> : null}
+      <ScrollView>
+        
+        <View style={styles.infoContainer}>
+            <Image source={{ uri: persona.imageUri }} style={styles.image} />
+            <Text style={styles.name}>{persona.name}</Text>
+            <Text style={styles.age}>{persona.age} years old, {persona.demographics.gender}</Text>
+            <Text style={styles.age}>{persona.demographics.location}</Text>
+        </View>
+        
+
+        <FlatList
+          data={messages}
+          renderItem={renderMessage}
+          keyExtractor={(item) => item.id.toString()}
+          inverted={true}
+          style={styles.messages}
+        />
+        { writingBack ? <Text>Writing back...</Text> : null}
+      </ScrollView>
+      
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -104,6 +116,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    justifyContent: "flex-end"
   },
   header: {
     backgroundColor: '#eee',
@@ -162,6 +175,28 @@ const styles = StyleSheet.create({
   sendButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+
+  infoContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  detailsContainer: {
+    justifyContent: "flex-start",
+    padding: 20,
+  },
+  image: {
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    marginBottom: 10,
+  },
+  name: {
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  age: {
+    fontSize: 18,
   },
 });
 
