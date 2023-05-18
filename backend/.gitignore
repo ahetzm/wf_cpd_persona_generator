@@ -82,3 +82,4 @@ buck-out/
 /out-tsc
 /bazel-out
 .env
+dist

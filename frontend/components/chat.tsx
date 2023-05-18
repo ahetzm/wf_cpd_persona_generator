@@ -29,9 +29,9 @@ const Chat: React.FC<Props> = ({ persona }) => {
   const fetchMessages = async () => {
     const fetchedMessages: ChatMessage[] = await getMessages(fakeUserId, persona.id) ?? [];
     console.log(fetchedMessages);
-    fetchedMessages.sort((a, b) => a.timestamp + b.timestamp);
+    const sortedArray = fetchedMessages.sort((a, b) => a.timestamp + b.timestamp);
     
-    setMessages(fetchedMessages);
+    setMessages(sortedArray);
   }
 
   useEffect(() => {
@@ -87,7 +87,7 @@ const Chat: React.FC<Props> = ({ persona }) => {
         <FlatList
           data={messages}
           renderItem={renderMessage}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item, index) => `${item.id}_${index}`}
           inverted={true}
           style={styles.messages}
         />

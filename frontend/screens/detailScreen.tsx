@@ -28,29 +28,29 @@ const DetailScreen: React.FC  = () => {
           {/* <Text style={styles.value}>{person.psychographics.interests.join(', ')}</Text> */}
           <View style={{flexDirection: 'row'}}>
             <Text>Interests: </Text>
-            {person.psychographics.interests.map((interest) => {
-              return <Badge text={interest} key={interest} />;
+            {person.psychographics.interests.map((interest, index) => {
+              return <Badge text={interest} key={interest + index} />;
             })}
           </View>
           {/* <Text style={styles.value}>{person.psychographics.hobbies.join(', ')}</Text> */}
           <View style={{flexDirection: 'row'}}>
             <Text>Hobbies: </Text>
-            {person.psychographics.hobbies.map((hobby) => {
-              return <Badge text={hobby} key={hobby} />;
+            {person.psychographics.hobbies.map((hobby, index) => {
+              return <Badge text={hobby} key={hobby + index} />;
             })}
           </View>
           
           <Text style={styles.value}>Lifestyle: {person.psychographics.lifestyle}</Text>
           <View style={{flexDirection: 'row'}}>
             <Text>Personality traits: </Text>
-            {person.psychographics.personality_traits.map((trait) => {
-              return <Badge text={trait} key={trait} />;
+            {person.psychographics.personality_traits.map((trait, index) => {
+              return <Badge text={trait} key={trait + index} />;
             })}
           </View>
           <View style={{flexDirection: 'row'}}>
             <Text>Values: </Text>
-            {person.psychographics.values.map((value) => {
-              return <Badge text={value} key={value} />;
+            {person.psychographics.values.map((value, index) => {
+              return <Badge text={value} key={value + index} />;
             })}
           </View>
           <Text style={styles.value}>{person.psychographics.additional_funfact}</Text>
@@ -72,8 +72,8 @@ const DetailScreen: React.FC  = () => {
           <Text style={styles.sectionTitle}>Communication Preferences</Text>
           <View style={{flexDirection: 'row'}}>
             <Text>Preferred communication channels: </Text>
-            {person.communication_preferences.preferred_channels.map((channel) => {
-              return (<Badge text={channel} key={channel} />)
+            {person.communication_preferences.preferred_channels.map((channel, index) => {
+              return (<Badge text={channel} key={channel + index} />)
             })}
           </View>
           <Text style={styles.value}>Preferred format: {person.communication_preferences.preferred_format}</Text>
