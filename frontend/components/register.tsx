@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import {Text, View, StyleSheet } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
-import {createUserWithEmailAndPassword, getAuth} from 'firebase/auth';
+import {createUserWithEmailAndPassword} from 'firebase/auth';
+import { auth } from '../services/firebase';
 
 interface Props {
     navigation: any;
 }
-const auth = getAuth();
+
 const Register: React.FC<Props> = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

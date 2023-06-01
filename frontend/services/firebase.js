@@ -14,6 +14,10 @@ import {
     setLogLevel
 } from "firebase/firestore";
 
+import 'firebase/auth';
+import { getAuth, } from "firebase/auth";
+
+
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
@@ -33,7 +37,8 @@ export const db = getFirestore(app);
 
 console.log("Firebase initialized");
 
-
+const auth = getAuth(app);
+export  {app, auth};
 // setLogLevel("debug");
 
 
