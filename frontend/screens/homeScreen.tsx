@@ -1,52 +1,47 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import React, {useEffect} from "react";
+import { ScrollView, StyleSheet, TouchableOpacity, View, Text } from "react-native";
 import Card from "../components/card";
 import { HomeScreenNavigationProp } from "../models/NavigationTypes";
-import { Person } from "../models/Person";
+import { getUser } from "../services/firebase";
+import usePersonaService from "../services/persona-service";
+// import * as Notifications from 'expo-notifications';
 
-const persons: Person[] = [
-  {
-    id: 1,
-    name: "Alice",
-    age: 25,
-    imageUri: "https://randomuser.me/api/portraits/women/1.jpg",
-  },
-  {
-    id: 2,
-    name: "Bob",
-    age: 30,
-    imageUri: "https://randomuser.me/api/portraits/men/1.jpg",
-  },
-  {
-    id: 3,
-    name: "Charlie",
-    age: 35,
-    imageUri: "https://randomuser.me/api/portraits/men/2.jpg",
-  },
-  {
-    id: 4,
-    name: "Diana",
-    age: 28,
-    imageUri: "https://randomuser.me/api/portraits/women/2.jpg",
-  },
-  {
-    id: 5,
-    name: "Eva",
-    age: 40,
-    imageUri: "https://randomuser.me/api/portraits/women/6.jpg",
-  },
-  {
-    id: 6,
-    name: "Frank",
-    age: 45,
-    imageUri: "https://randomuser.me/api/portraits/men/5.jpg",
-  },
-];
+// Fetch test user from firebase
+const fakeUserId = "86tgh89zg9";
+getUser(fakeUserId).then((user) => {
+  console.log(user);
+});
 
-const HomeScreen = () => {
-  // const navigation = useNavigation<HomeScreenNavigationProp>();
+const HomeScreen: React.FC = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
+
+  const { persons, fetchPersonas } = usePersonaService();
+
+  // Fetch personas from firebase on component mount
+  useEffect(() => {
+    fetchPersonas(fakeUserId);
+  }, [fetchPersonas]);
+
+
+  // // First, set the handler that will cause the notification
+  // // to show the alert
+  // Notifications.setNotificationHandler({
+  //   handleNotification: async () => ({
+  //     shouldShowAlert: true,
+  //     shouldPlaySound: false,
+  //     shouldSetBadge: false,
+  //   }),
+  // });
+
+  // // Second, call the method
+  // Notifications.scheduleNotificationAsync({
+  //   content: {
+  //     title: 'Look at that notification',
+  //     body: "I'm so proud of myself!",
+  //   },
+  //   trigger: null,
+  // });
 
   return (
     <View style={styles.container}>
@@ -58,12 +53,30 @@ const HomeScreen = () => {
           >
             <Card
               name={person.name}
-              age={person.age}
+              age={Number(person.age)}
               imageUri={person.imageUri}
             />
           </TouchableOpacity>
         ))}
       </ScrollView>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("CreatePersona")}
+        style={{
+          borderWidth: 1,
+          borderColor: '#fff',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: 70,
+          position: 'absolute',
+          bottom: 10,
+          right: 10,
+          height: 70,
+          backgroundColor: '#4BB543',
+          borderRadius: 100,
+        }}
+        >
+        <Text style={{fontSize: 48, lineHeight: 1, color: '#fff', marginBottom: 7}}>+</Text>
+      </TouchableOpacity>
     </View>
   );
 };
