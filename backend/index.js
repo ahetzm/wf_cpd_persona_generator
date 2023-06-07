@@ -162,7 +162,7 @@ function createImagePrompt(personaData = {
   age: '',
   interests: '',
 }) {
-  const {name, age, interests} = personaData;
+  let {name, age, interests} = personaData;
 
   if (!typeof interests === 'string') {
     interests = interests.join(', ');
