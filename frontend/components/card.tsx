@@ -1,16 +1,16 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import {Image, StyleSheet, Text, View} from "react-native";
 
 interface CardProps {
-    name: string;
-    age: number;
-    imageUri: string;
+  name: string;
+  age: number;
+  imageUri: string;
 }
 
-const Card: React.FC<CardProps> = ({ name, age, imageUri }) => {
+const Card: React.FC<CardProps> = ({name, age, imageUri}) => {
   return (
     <View style={styles.card}>
-      <Image style={styles.image} source={{ uri: imageUri }} />
+      <Image style={styles.image} source={{uri: imageUri}}/>
       <View style={styles.details}>
         <Text style={styles.name}>{name}</Text>
         <View style={styles.bottomRow}>

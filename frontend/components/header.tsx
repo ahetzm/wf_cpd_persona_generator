@@ -1,12 +1,12 @@
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { StyleSheet, Text, View } from "react-native";
+import {faSignOutAlt} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {StyleSheet, Text, View} from "react-native";
 
 export default function Header() {
   return (
     <View style={styles.header}>
       <Text style={styles.title}>Random Persona Generator</Text>
-      <FontAwesomeIcon icon={faSignOutAlt} size={24} color="#007aff" />
+      <FontAwesomeIcon icon={faSignOutAlt} size={24} color="#007aff"/>
     </View>
   );
 }

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { useNavigation } from "@react-navigation/native";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {useNavigation} from "@react-navigation/native";
+import {View, Text, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
 import usePersonaService from "../services/persona-service";
-import { PersonaRequest } from '../models/PersonaInterface';
-import { Person } from '../models/Person';
+import {PersonaRequest} from '../models/PersonaInterface';
+import {Person} from '../models/Person';
 
 const CreatePersonForm: React.FC<any> = () => {
   const [purposeContext, setPurposeContext] = useState('');
@@ -14,7 +14,7 @@ const CreatePersonForm: React.FC<any> = () => {
   const [additionalInfo, setAdditionalInfo] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { createPerson } = usePersonaService();
+  const {createPerson} = usePersonaService();
   const navigation = useNavigation();
 
   const handleSubmit = () => {
@@ -49,7 +49,7 @@ const CreatePersonForm: React.FC<any> = () => {
 
       // Navigate to created person details screen
       // @ts-ignore
-      navigation.navigate("Details", { person: person });
+      navigation.navigate("Details", {person: person});
     });
 
   }

@@ -1,9 +1,9 @@
 import React from "react";
-import { useRoute } from "@react-navigation/native";
-import { ScrollView, StyleSheet, View } from "react-native";
-import { getUser } from "../services/firebase";
+import {useRoute} from "@react-navigation/native";
+import {ScrollView, StyleSheet, View} from "react-native";
+import {getUser} from "../services/firebase";
 import CreatePersonForm from "../components/create-person-form";
-import { CreatePersonaScreenRouteProp } from "../models/NavigationTypes";
+import {CreatePersonaScreenRouteProp} from "../models/NavigationTypes";
 
 
 // Fetch test user from firebase
@@ -18,7 +18,7 @@ const CreatePersonaScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <CreatePersonForm />
+        <CreatePersonForm/>
       </ScrollView>
     </View>
   );

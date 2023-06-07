@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import React, {useState} from 'react';
+import {View, Image, TouchableOpacity, StyleSheet} from 'react-native';
 
 type Props = {
   images: string[];
   onSelect: (selectedImage: string) => void;
 };
 
-const ImagePicker: React.FC<Props> = ({ images, onSelect }) => {
+const ImagePicker: React.FC<Props> = ({images, onSelect}) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const handleImagePress = (image: string) => {
@@ -26,14 +26,14 @@ const ImagePicker: React.FC<Props> = ({ images, onSelect }) => {
         <View key={index} style={styles.imageContainer}>
           <TouchableOpacity onPress={() => handleImagePress(pair[0])}>
             <Image
-              source={{ uri: pair[0] }}
+              source={{uri: pair[0]}}
               style={[styles.image, selectedImage === pair[0] && styles.selectedImage]}
             />
           </TouchableOpacity>
           {pair[1] && (
             <TouchableOpacity onPress={() => handleImagePress(pair[1])}>
               <Image
-                source={{ uri: pair[1] }}
+                source={{uri: pair[1]}}
                 style={[styles.image, selectedImage === pair[1] && styles.selectedImage]}
               />
             </TouchableOpacity>

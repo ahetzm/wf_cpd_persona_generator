@@ -1,11 +1,16 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { useCallback, useState } from 'react';
-import { Person, PersonFactory } from "../models/Person";
-import { PersonaRequest, PersonaRequestFactory, PersonaResponse, PersonaResponseFactory } from "../models/PersonaInterface";
-import { ImageResponse, ImageResponseFactory } from "../models/ImageInterface";
-import { AnswerResponse, AnswerResponseFactory, PersonaQuestionRequest } from "../models/AnswerInterface";
-import { MessageResponse, MessageResponseFactory } from "../models/MessageInterface";
-import { getPersonas, getRandId, savePersona } from "./firebase";
+import axios, {AxiosInstance, AxiosResponse} from "axios";
+import {useCallback, useState} from 'react';
+import {Person, PersonFactory} from "../models/Person";
+import {
+  PersonaRequest,
+  PersonaRequestFactory,
+  PersonaResponse,
+  PersonaResponseFactory
+} from "../models/PersonaInterface";
+import {ImageResponse, ImageResponseFactory} from "../models/ImageInterface";
+import {AnswerResponse, AnswerResponseFactory, PersonaQuestionRequest} from "../models/AnswerInterface";
+import {MessageResponse, MessageResponseFactory} from "../models/MessageInterface";
+import {getPersonas, getRandId, savePersona} from "./firebase";
 
 
 // TODO remove return of fake mock data in case API fails to deliver

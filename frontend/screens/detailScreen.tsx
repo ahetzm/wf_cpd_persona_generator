@@ -1,57 +1,66 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {useNavigation, useRoute} from "@react-navigation/native";
 import React, {useState} from "react";
-import { Image, ScrollView, StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { DetailsScreenRouteProp, HomeScreenNavigationProp } from "../models/NavigationTypes";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+} from "react-native";
+import {
+  DetailsScreenRouteProp,
+  HomeScreenNavigationProp,
+} from "../models/NavigationTypes";
 import Badge from "../components/badge";
 
-const DetailScreen: React.FC  = () => {
+const DetailScreen: React.FC = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const route = useRoute<DetailsScreenRouteProp>();
-  const { person } = route.params;
+  const {person} = route.params;
 
   return (
     <View style={styles.main}>
-        <ScrollView>
-        <View style={styles.container}>
-          <Image source={{ uri: person.imageUri }} style={styles.image} />
-          <Text style={styles.name}>{person.name}</Text>
-          <Text style={styles.age}>{person.age} years old, {person.demographics.gender}</Text>
-          <Text style={styles.age}>{person.demographics.location}</Text>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Image source={{uri: person.imageUri}} style={styles.image}/>
+        <Text style={styles.name}>{person.name}</Text>
+        <Text style={styles.age}>
+          {person.age} years old, {person.demographics.gender}
+        </Text>
+        <Text style={styles.age}>{person.demographics.location}</Text>
 
-          <View style={styles.detailsContainer}>
+        <View style={styles.detailsContainer}>
           <Text style={styles.sectionTitle}>Demographics</Text>
           <Text style={styles.value}>Education: {person.demographics.education}</Text>
           <Text style={styles.value}>Income: {person.demographics.income}</Text>
           <Text style={styles.value}>{person.demographics.marital_status}</Text>
 
           <Text style={styles.sectionTitle}>Psychographics</Text>
-          {/* <Text style={styles.value}>{person.psychographics.interests.join(', ')}</Text> */}
-          <View style={{flexDirection: 'row'}}>
-            <Text>Interests: </Text>
-            {person.psychographics.interests.map((interest, index) => {
-              return <Badge text={interest} key={interest + index} />;
-            })}
-          </View>
-          {/* <Text style={styles.value}>{person.psychographics.hobbies.join(', ')}</Text> */}
-          <View style={{flexDirection: 'row'}}>
+          <View style={styles.rowContainer}>
             <Text>Hobbies: </Text>
-            {person.psychographics.hobbies.map((hobby, index) => {
-              return <Badge text={hobby} key={hobby + index} />;
-            })}
+            <View style={styles.badgeContainer}>
+              {person.psychographics.hobbies.map((hobby, index) => {
+                return <Badge text={hobby} key={hobby + index}/>;
+              })}
+            </View>
           </View>
-          
+
           <Text style={styles.value}>Lifestyle: {person.psychographics.lifestyle}</Text>
           <View style={{flexDirection: 'row'}}>
             <Text>Personality traits: </Text>
-            {person.psychographics.personality_traits.map((trait, index) => {
-              return <Badge text={trait} key={trait + index} />;
-            })}
+            <View style={styles.badgeContainer}>
+              {person.psychographics.personality_traits.map((trait, index) => {
+                return <Badge text={trait} key={trait + index}/>;
+              })}
+            </View>
           </View>
           <View style={{flexDirection: 'row'}}>
             <Text>Values: </Text>
-            {person.psychographics.values.map((value, index) => {
-              return <Badge text={value} key={value + index} />;
-            })}
+            <View style={styles.badgeContainer}>
+              {person.psychographics.values.map((value, index) => {
+                return <Badge text={value} key={value + index}/>;
+              })}
+            </View>
           </View>
           <Text style={styles.value}>{person.psychographics.additional_funfact}</Text>
 
@@ -72,54 +81,42 @@ const DetailScreen: React.FC  = () => {
           <Text style={styles.sectionTitle}>Communication Preferences</Text>
           <View style={{flexDirection: 'row'}}>
             <Text>Preferred communication channels: </Text>
-            {person.communication_preferences.preferred_channels.map((channel, index) => {
-              return (<Badge text={channel} key={channel + index} />)
-            })}
+            <View style={styles.badgeContainer}>
+              {person.communication_preferences.preferred_channels.map((channel, index) => {
+                return (<Badge text={channel} key={channel + index}/>)
+              })}
+            </View>
           </View>
-          <Text style={styles.value}>Preferred format: {person.communication_preferences.preferred_format}</Text>
+          <Text style={styles.value}>Preferred format:
+            {person.communication_preferences.preferred_format}
+          </Text>
           <Text style={styles.value}>Tone of voice: {person.communication_preferences.tone_of_voice}</Text>
         </View>
-      </View>
       </ScrollView>
       <TouchableOpacity
         onPress={() => navigation.navigate("Chat", {person: person})}
-        style={{
-          borderWidth: 1,
-          borderColor: '#fff',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: 70,
-          position: 'absolute',
-          bottom: 10,
-          right: 10,
-          height: 70,
-          backgroundColor: '#4BB543',
-          borderRadius: 100,
-        }}
-        >
-        <Text style={{fontSize: 24, lineHeight: 1, color: '#fff'}}>Ask</Text>
+        style={styles.floatingButton}
+      >
+        <Text style={styles.buttonText}>Ask</Text>
       </TouchableOpacity>
     </View>
-    
   );
 };
 
 const styles = StyleSheet.create({
-
   main: {
     flex: 1,
     backgroundColor: "#fff",
-    justifyContent: "center",
     padding: 10,
   },
-
   container: {
+    flexGrow: 1,
     alignItems: "center",
-    justifyContent: "center",
+    paddingBottom: 20,
   },
   detailsContainer: {
-    justifyContent: "flex-start",
-    padding: 20,
+    width: "100%",
+    paddingHorizontal: 20,
   },
   image: {
     width: 200,
@@ -130,22 +127,47 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 24,
     fontWeight: "bold",
+    marginBottom: 10,
   },
   age: {
     fontSize: 18,
-  },
-
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
     marginBottom: 10,
   },
-  label: {
-    fontWeight: 'bold',
-    marginBottom: 5,
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+    marginTop: 20,
   },
   value: {
     marginBottom: 10,
+  },
+  rowContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  badgeContainer: {
+    flexWrap: "wrap",
+    flexDirection: "row",
+    marginLeft: 5,
+  },
+  floatingButton: {
+    position: "absolute",
+    bottom: 10,
+    right: 10,
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: "#4BB543",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#fff",
+  },
+  buttonText: {
+    fontSize: 24,
+    lineHeight: 1,
+    color: "#fff",
   },
 });
 

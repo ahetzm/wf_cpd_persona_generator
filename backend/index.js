@@ -1,48 +1,48 @@
 import dotenv from "dotenv";
 import express from "express";
-import { jsonrepair } from 'jsonrepair'
+import {jsonrepair} from 'jsonrepair'
 import cors from 'cors';
 import bodyParser from "body-parser";
 import compression from "compression";
 import morgan from "morgan";
-import { Configuration, OpenAIApi } from "openai";
+import {Configuration, OpenAIApi} from "openai";
 import {
-    errorHandling,
-    errorLogger,
-    invalidPathHandler,
-    wrap,
+  errorHandling,
+  errorLogger,
+  invalidPathHandler,
+  wrap,
 } from "./middleware/error.js";
 
 // Init Express
 const app = express();
 const morganLogFormat =
-    ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":user-agent"';
+  ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":user-agent"';
 app.use(morgan(morganLogFormat));
 app.use(cors());
 app.use(compression());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 dotenv.config();
 
 // Init OpenAI
 const openai = new OpenAIApi(
-    new Configuration({
-        apiKey: process.env.OPENAI_API_KEY,
-    })
+  new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+  })
 );
 
 function createPersonaPrompt(personaData = {
-    purpose_context: '',
-    name: '',
-    age: '',
-    interests: '',
-    goals: '',
-    additional_info: '',
+  purpose_context: '',
+  name: '',
+  age: '',
+  interests: '',
+  goals: '',
+  additional_info: '',
 }) {
 
-    const { purpose_context, name, age, interests, goals, additional_info } = personaData;
+  const {purpose_context, name, age, interests, goals, additional_info} = personaData;
 
-    return `
+  return `
         Create a persona for marketing and product development purposes based on the target audience profile of ${name}.
 
         Here is some context for about the situation the persona is needed for: ${purpose_context}.
@@ -158,21 +158,21 @@ function createPersonaPrompt(personaData = {
  */
 
 function createImagePrompt(personaData = {
-    name: '',
-    age: '',
-    interests: '',
+  name: '',
+  age: '',
+  interests: '',
 }) {
-    const { name, age, interests } = personaData;
+  const {name, age, interests} = personaData;
 
-    if (!typeof interests === 'string') {
-        interests = interests.join(', ');
-    }
+  if (!typeof interests === 'string') {
+    interests = interests.join(', ');
+  }
 
-    return `Generate a photo-realistic image of a ${age} years old persona named ${name} with interests in ${interests}.`;
+  return `Generate a photo-realistic image of a ${age} years old persona named ${name} with interests in ${interests}.`;
 }
 
 function createAskQuestionPrompt(question, personaData) {
-    return `I provide you with data of a persona in JSON format:
+  return `I provide you with data of a persona in JSON format:
 
     ${JSON.stringify(personaData)}
     
@@ -180,7 +180,7 @@ function createAskQuestionPrompt(question, personaData) {
 }
 
 function createMessagesPrompt(personaData) {
-    return `I provide you with data of a persona in JSON format:
+  return `I provide you with data of a persona in JSON format:
 
     ${JSON.stringify(personaData)}
     
@@ -189,98 +189,98 @@ function createMessagesPrompt(personaData) {
 
 // Routes
 app.get(
-    "/",
-    wrap(async (req, res, next) => {
-        console.log(req.protocol + "://" + req.headers.host);
-        const routes = [];
-        app._router.stack.forEach(function (r) {
-            if (r.route && r.route.path) {
-                routes.push({ path: r.route.path, method: r.route.methods });
-            }
-        });
-        return res.json({ message: "Persona Generator Backend", routes: routes });
-    })
+  "/",
+  wrap(async (req, res, next) => {
+    console.log(req.protocol + "://" + req.headers.host);
+    const routes = [];
+    app._router.stack.forEach(function (r) {
+      if (r.route && r.route.path) {
+        routes.push({path: r.route.path, method: r.route.methods});
+      }
+    });
+    return res.json({message: "Persona Generator Backend", routes: routes});
+  })
 );
 
 app.post(
-    "/api/persona",
-    wrap(async (req, res, next) => {
-        console.log("creating persona");
-        const answer = await openai.createChatCompletion({
-            model: "gpt-3.5-turbo",
-            messages: [
-                {
-                    role: "user",
-                    content: createPersonaPrompt(req.body),
-                },
-            ],
-        });
+  "/api/persona",
+  wrap(async (req, res, next) => {
+    console.log("creating persona");
+    const answer = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "user",
+          content: createPersonaPrompt(req.body),
+        },
+      ],
+    });
 
-        const repaired = jsonrepair(answer.data.choices[0].message.content);
-        const parsed = JSON.parse(repaired);
-        console.log(parsed);
-        res.json(parsed);
-    })
+    const repaired = jsonrepair(answer.data.choices[0].message.content);
+    const parsed = JSON.parse(repaired);
+    console.log(parsed);
+    res.json(parsed);
+  })
 );
 
 app.post(
-    "/api/images",
-    wrap(async (req, res, next) => {
-        console.log('creating image');
+  "/api/images",
+  wrap(async (req, res, next) => {
+    console.log('creating image');
 
-        const prompt = createImagePrompt(req.body).toString();
+    const prompt = createImagePrompt(req.body).toString();
 
-        const response = await openai.createImage({
-            prompt: prompt,
-            n: 4,
-            size: "1024x1024",
-        });
+    const response = await openai.createImage({
+      prompt: prompt,
+      n: 4,
+      size: "1024x1024",
+    });
 
-        res.json({ urls: response.data.data.map((image) => image.url) });
-    })
+    res.json({urls: response.data.data.map((image) => image.url)});
+  })
 );
 
 app.post(
-    "/api/ask",
-    wrap(async (req, res, next) => {
-        console.log('asking question');
-        const prompt = createAskQuestionPrompt(req.body.question, req.body.data).toString();
-        console.log(prompt);
-        const answer = await openai.createChatCompletion({
-            model: "gpt-3.5-turbo",
-            messages: [
-                {
-                    role: "user",
-                    content: prompt,
-                },
-            ],
-        });
+  "/api/ask",
+  wrap(async (req, res, next) => {
+    console.log('asking question');
+    const prompt = createAskQuestionPrompt(req.body.question, req.body.data).toString();
+    console.log(prompt);
+    const answer = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+    });
 
-        res.json({ answer: answer.data.choices[0].message.content });
-    })
+    res.json({answer: answer.data.choices[0].message.content});
+  })
 );
 
 app.post(
-    "/api/messages",
-    wrap(async (req, res, next) => {
-        console.log('creating messages');
-        const prompt = createMessagesPrompt(req.body).toString();
-        console.log(prompt);
-        const answer = await openai.createChatCompletion({
-            model: "gpt-3.5-turbo",
-            messages: [
-                {
-                    role: "user",
-                    content: prompt,
-                },
-            ],
-        });
+  "/api/messages",
+  wrap(async (req, res, next) => {
+    console.log('creating messages');
+    const prompt = createMessagesPrompt(req.body).toString();
+    console.log(prompt);
+    const answer = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+    });
 
-        const repaired = jsonrepair(answer.data.choices[0].message.content);
-        const parsed = JSON.parse(repaired);
-        console.log(parsed);
-        res.json(parsed);
-    })
+    const repaired = jsonrepair(answer.data.choices[0].message.content);
+    const parsed = JSON.parse(repaired);
+    console.log(parsed);
+    res.json(parsed);
+  })
 );
 
 // Error Handling
@@ -291,10 +291,10 @@ app.use(invalidPathHandler);
 // Start listening
 const port = process.env.PORT || 7000;
 app.listen(port, () => {
-    console.log(
-        "🧏 " + new Date().toISOString() + " - listening on port =",
-        port
-    );
-    console.log("--- Successfully Initialised NodeJS Backend ---");
+  console.log(
+    "🧏 " + new Date().toISOString() + " - listening on port =",
+    port
+  );
+  console.log("--- Successfully Initialised NodeJS Backend ---");
 });
 

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, ScrollView, Image } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, ScrollView, Image} from 'react-native';
 import usePersonaService from "../services/persona-service";
-import { PersonaQuestionRequest } from "../models/AnswerInterface";
-import { getMessages, getRandId, saveMessage } from "../services/firebase";
-import { Person } from '../models/Person';
+import {PersonaQuestionRequest} from "../models/AnswerInterface";
+import {getMessages, getRandId, saveMessage} from "../services/firebase";
+import {Person} from '../models/Person';
 
 export type ChatMessage = {
   id: string;
@@ -19,18 +19,18 @@ type Props = {
 // TODO Fetch test user from firebase
 const fakeUserId = "86tgh89zg9";
 
-const Chat: React.FC<Props> = ({ persona }) => {
+const Chat: React.FC<Props> = ({persona}) => {
   const [text, setText] = useState<string>('');
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [writingBack, setWritingBack] = useState<boolean>(false);
-  
+
   const {getAnswer} = usePersonaService();
- 
+
   const fetchMessages = async () => {
     const fetchedMessages: ChatMessage[] = await getMessages(fakeUserId, persona.id) ?? [];
     console.log(fetchedMessages);
     const sortedArray = fetchedMessages.sort((a, b) => a.timestamp + b.timestamp);
-    
+
     setMessages(sortedArray);
   }
 
@@ -41,30 +41,35 @@ const Chat: React.FC<Props> = ({ persona }) => {
 
   const onSendHandler = async () => {
     console.log(text);
-    const newMessage: ChatMessage = { message: text, id: getRandId(), isUser: true, timestamp: (new Date()).getTime() };
-    setMessages((prevMessages) => [ newMessage, ...prevMessages ]);
+    const newMessage: ChatMessage = {message: text, id: getRandId(), isUser: true, timestamp: (new Date()).getTime()};
+    setMessages((prevMessages) => [newMessage, ...prevMessages]);
     saveMessage(fakeUserId, persona.id, newMessage);
-    
+
     getAnswerHandler(text).then(console.log).catch(console.error);
     setText('');
   };
 
   const getAnswerHandler = async (message: string) => {
     setWritingBack(true);
-    const answerRequest: PersonaQuestionRequest = { question: message, data: persona };
+    const answerRequest: PersonaQuestionRequest = {question: message, data: persona};
     const answer = await getAnswer(answerRequest);
-  
-    const newMessage: ChatMessage = { message: answer, id: getRandId(), isUser: false, timestamp: (new Date()).getTime()  };
-    
+
+    const newMessage: ChatMessage = {
+      message: answer,
+      id: getRandId(),
+      isUser: false,
+      timestamp: (new Date()).getTime()
+    };
+
     setWritingBack(false);
     saveMessage(fakeUserId, persona.id, newMessage);
 
-    setMessages((prevMessages) => [ newMessage, ...prevMessages ]);
-    
+    setMessages((prevMessages) => [newMessage, ...prevMessages]);
+
     return answer;
   };
 
-  const renderMessage = ({ item }: { item: ChatMessage }) => {
+  const renderMessage = ({item}: { item: ChatMessage }) => {
     return (
       <View style={[styles.messageContainer, item.isUser ? styles.userMessageContainer : styles.otherMessageContainer]}>
         <Text style={item.isUser ? styles.userMessageText : styles.otherMessageText}>{item.message}</Text>
@@ -75,14 +80,14 @@ const Chat: React.FC<Props> = ({ persona }) => {
   return (
     <View style={styles.container}>
       <ScrollView>
-        
+
         <View style={styles.infoContainer}>
-            <Image source={{ uri: persona.imageUri }} style={styles.image} />
-            <Text style={styles.name}>{persona.name}</Text>
-            <Text style={styles.age}>{persona.age} years old, {persona.demographics.gender}</Text>
-            <Text style={styles.age}>{persona.demographics.location}</Text>
+          <Image source={{uri: persona.imageUri}} style={styles.image}/>
+          <Text style={styles.name}>{persona.name}</Text>
+          <Text style={styles.age}>{persona.age} years old, {persona.demographics.gender}</Text>
+          <Text style={styles.age}>{persona.demographics.location}</Text>
         </View>
-        
+
 
         <FlatList
           data={messages}
@@ -91,9 +96,9 @@ const Chat: React.FC<Props> = ({ persona }) => {
           inverted={true}
           style={styles.messages}
         />
-        { writingBack ? <Text>Writing back...</Text> : null}
+        {writingBack ? <Text>Writing back...</Text> : null}
       </ScrollView>
-      
+
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
