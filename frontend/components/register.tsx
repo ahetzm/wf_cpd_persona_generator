@@ -3,12 +3,15 @@ import {Text, View, StyleSheet} from 'react-native';
 import {TextInput, Button} from 'react-native-paper';
 import {createUserWithEmailAndPassword} from 'firebase/auth';
 import {auth} from '../services/firebase';
+import {saveUser} from '../services/firebase';
+import {User} from '../models/User';
 
 interface Props {
   navigation: any;
 }
 
 const Register: React.FC<Props> = ({navigation}) => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -16,7 +19,22 @@ const Register: React.FC<Props> = ({navigation}) => {
   const handleRegister = async () => {
     try {
       const result = await createUserWithEmailAndPassword(auth, email, password);
-      navigation.navigate('Login');
+
+      if(result.user) {
+        console.log(result.user);
+        console.log(result.user.uid);
+        const user: User = {
+          uid: result.user.uid,
+          name: name,
+          email: result.user.email ?? email,
+        }
+        await saveUser(user);
+  
+        navigation.navigate('Home', {user: user});
+      }
+      else {
+        setErrorMessage('Something went wrong! Please try again.');
+      }
     } catch (error: any) {
       console.error(error);
       setErrorMessage(error.message);
@@ -25,6 +43,12 @@ const Register: React.FC<Props> = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <TextInput
+        label="Username"
+        value={name}
+        onChangeText={(text) => setName(text)}
+        style={styles.input}
+      />
       <TextInput
         label="Email"
         value={email}

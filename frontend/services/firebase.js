@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import {initializeApp} from "firebase/app";
+import { initializeApp } from "firebase/app";
 import {
   addDoc,
   doc,
@@ -15,7 +15,7 @@ import {
 } from "firebase/firestore";
 
 import 'firebase/auth';
-import {getAuth,} from "firebase/auth";
+import { getAuth, } from "firebase/auth";
 
 
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -38,7 +38,7 @@ export const db = getFirestore(app);
 console.log("Firebase initialized");
 
 const auth = getAuth(app);
-export {app, auth};
+export { app, auth };
 // setLogLevel("debug");
 
 
@@ -130,7 +130,7 @@ export async function getUser(userId) {
 }
 
 export async function saveUser(user) {
-  const userId = user.id;
+  const userId = user.uid;
   await setData(user, "user", userId);
 }
 

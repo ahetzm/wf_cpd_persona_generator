@@ -4,6 +4,7 @@ import usePersonaService from "../services/persona-service";
 import {PersonaQuestionRequest} from "../models/AnswerInterface";
 import {getMessages, getRandId, saveMessage} from "../services/firebase";
 import {Person} from '../models/Person';
+import {User} from '../models/User';
 
 export type ChatMessage = {
   id: string;
@@ -14,20 +15,18 @@ export type ChatMessage = {
 
 type Props = {
   persona: Person;
+  user: User;
 };
 
-// TODO Fetch test user from firebase
-const fakeUserId = "86tgh89zg9";
-
-const Chat: React.FC<Props> = ({persona}) => {
+const Chat: React.FC<Props> = ({persona, user}) => {
   const [text, setText] = useState<string>('');
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [writingBack, setWritingBack] = useState<boolean>(false);
 
-  const {getAnswer} = usePersonaService();
+  const {getAnswer} = usePersonaService(user.uid);
 
   const fetchMessages = async () => {
-    const fetchedMessages: ChatMessage[] = await getMessages(fakeUserId, persona.id) ?? [];
+    const fetchedMessages: ChatMessage[] = await getMessages(user.uid, persona.id) ?? [];
     console.log(fetchedMessages);
     const sortedArray = fetchedMessages.sort((a, b) => a.timestamp + b.timestamp);
 
@@ -43,7 +42,7 @@ const Chat: React.FC<Props> = ({persona}) => {
     console.log(text);
     const newMessage: ChatMessage = {message: text, id: getRandId(), isUser: true, timestamp: (new Date()).getTime()};
     setMessages((prevMessages) => [newMessage, ...prevMessages]);
-    saveMessage(fakeUserId, persona.id, newMessage);
+    saveMessage(user.uid, persona.id, newMessage);
 
     getAnswerHandler(text).then(console.log).catch(console.error);
     setText('');
@@ -62,7 +61,7 @@ const Chat: React.FC<Props> = ({persona}) => {
     };
 
     setWritingBack(false);
-    saveMessage(fakeUserId, persona.id, newMessage);
+    saveMessage(user.uid, persona.id, newMessage);
 
     setMessages((prevMessages) => [newMessage, ...prevMessages]);
 
@@ -88,14 +87,15 @@ const Chat: React.FC<Props> = ({persona}) => {
           <Text style={styles.age}>{persona.demographics.location}</Text>
         </View>
 
-
-        <FlatList
-          data={messages}
-          renderItem={renderMessage}
-          keyExtractor={(item, index) => `${item.id}_${index}`}
-          inverted={true}
-          style={styles.messages}
-        />
+        <View>
+          <FlatList
+            data={messages}
+            renderItem={renderMessage}
+            keyExtractor={(item, index) => `${item.id}_${index}`}
+            inverted={true}
+            style={styles.messages}
+          />
+        </View>
         {writingBack ? <Text>Writing back...</Text> : null}
       </ScrollView>
 

@@ -13,11 +13,19 @@ import {
   HomeScreenNavigationProp,
 } from "../models/NavigationTypes";
 import Badge from "../components/badge";
+import usePersonaService from "../services/persona-service";
 
 const DetailScreen: React.FC = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const route = useRoute<DetailsScreenRouteProp>();
-  const {person} = route.params;
+  const {person, user} = route.params;
+  const {removePersona} = usePersonaService(user.uid);
+
+  const handleDeletePerson = async () => {
+    console.log("Deleting person...", person.id);
+    await removePersona(user.uid, person.id);
+    navigation.navigate("Home", {user: user, personaToDelete: person.id});
+  };
 
   return (
     <View style={styles.main}>
@@ -92,9 +100,19 @@ const DetailScreen: React.FC = () => {
           </Text>
           <Text style={styles.value}>Tone of voice: {person.communication_preferences.tone_of_voice}</Text>
         </View>
+        <TouchableOpacity
+          onPress={handleDeletePerson}
+          style={{
+            padding: 10,
+            backgroundColor: "#ff0000",
+            borderRadius: 100,
+          }}
+        >
+        <Text style={styles.buttonText}>Delete</Text>
+      </TouchableOpacity>
       </ScrollView>
       <TouchableOpacity
-        onPress={() => navigation.navigate("Chat", {person: person})}
+        onPress={() => navigation.navigate("Chat", {person: person, user: user})}
         style={styles.floatingButton}
       >
         <Text style={styles.buttonText}>Ask</Text>
@@ -166,7 +184,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 24,
-    lineHeight: 1,
     color: "#fff",
   },
 });

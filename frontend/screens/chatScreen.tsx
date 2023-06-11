@@ -7,11 +7,11 @@ import Chat from "../components/chat";
 
 const CreatePersonaScreen: React.FC = () => {
   const route = useRoute<ChatScreenRouteProp>();
-  const {person} = route.params;
+  const {person, user} = route.params;
 
   return (
     <View style={styles.main}>
-      <Chat persona={person}/>
+      <Chat persona={person} user={user}/>
     </View>
   );
 };
