@@ -28,7 +28,7 @@ const Chat: React.FC<Props> = ({persona, user}) => {
   const fetchMessages = async () => {
     const fetchedMessages: ChatMessage[] = await getMessages(user.uid, persona.id) ?? [];
     console.log(fetchedMessages);
-    const sortedArray = fetchedMessages.sort((a, b) => a.timestamp + b.timestamp);
+    const sortedArray = fetchedMessages.sort((a, b) => b.timestamp - a.timestamp);
 
     setMessages(sortedArray);
   }
@@ -72,6 +72,7 @@ const Chat: React.FC<Props> = ({persona, user}) => {
     return (
       <View style={[styles.messageContainer, item.isUser ? styles.userMessageContainer : styles.otherMessageContainer]}>
         <Text style={item.isUser ? styles.userMessageText : styles.otherMessageText}>{item.message}</Text>
+        {/* <Text style={{...(item.isUser ? styles.userMessageText : styles.otherMessageText), fontSize: 8}}>{new Date(item.timestamp).toLocaleTimeString()}</Text> */}
       </View>
     );
   };
