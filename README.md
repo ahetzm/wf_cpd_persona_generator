@@ -5,6 +5,7 @@ Node sever connecting to OpenAI API
 ### Development
 ```shell
 cd backend
+npm install
 npm run dev
 ```
 
@@ -22,5 +23,6 @@ React native with expo
 ### Development
 ```shell
 cd frontend
+npm install
 npx expo start
 ```
