@@ -10,7 +10,7 @@ import {
 import {ImageResponse, ImageResponseFactory} from "../models/ImageInterface";
 import {AnswerResponse, AnswerResponseFactory, PersonaQuestionRequest} from "../models/AnswerInterface";
 import {MessageResponse, MessageResponseFactory} from "../models/MessageInterface";
-import {getPersonas, getRandId, savePersona, deletePersona} from "./firebase";
+import {deletePersona, getPersonas, getRandId, savePersona} from "./firebase";
 
 
 // TODO remove return of fake mock data in case API fails to deliver

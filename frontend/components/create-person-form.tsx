@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useNavigation} from "@react-navigation/native";
-import {View, Text, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions} from 'react-native';
 import usePersonaService from "../services/persona-service";
 import {PersonaRequest} from '../models/PersonaInterface';
 import {Person} from '../models/Person';
@@ -58,7 +58,7 @@ const CreatePersonForm: React.FC<any> = ({user}) => {
   return (
     <View style={styles.container}>
       {/* <Text style={styles.title}>Fill out the form below to create a new persona</Text> */}
-      {loading && 
+      {loading &&
         <Text style={{
           color: '#000',
           marginTop: 20,
@@ -66,13 +66,13 @@ const CreatePersonForm: React.FC<any> = ({user}) => {
           fontSize: 16,
         }}
         >
-        Loading...
+          Loading...
         </Text>
       }
 
       {/* <ImagePicker images={person.urls} onSelect={(url) => {console.log(url)}} /> */}
 
-      { !loading && 
+      {!loading &&
         <View>
           <Text style={styles.inputLabel}>Purpose/Context:</Text>
           <TextInput
@@ -125,6 +125,8 @@ const CreatePersonForm: React.FC<any> = ({user}) => {
 
 export default CreatePersonForm;
 
+const {width} = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -132,6 +134,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 20,
     backgroundColor: '#fff',
+  },
+  formContainer: {
+    width: '100%',
+    maxWidth: 400,
+    padding: 20,
   },
   title: {
     fontSize: 20,
@@ -148,7 +155,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 20,
-    width: '100%',
+    width: width - 40,
     fontSize: 16,
   },
   button: {
