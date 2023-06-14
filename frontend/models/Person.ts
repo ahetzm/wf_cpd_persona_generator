@@ -1,7 +1,7 @@
-import { faker } from '@faker-js/faker';
-import { ImageResponse, ImageResponseFactory } from './ImageInterface';
-import { MessageResponse, MessageResponseFactory } from './MessageInterface';
-import { PersonaResponse, PersonaResponseFactory } from './PersonaInterface';
+import {faker} from '@faker-js/faker';
+import {ImageResponse, ImageResponseFactory} from './ImageInterface';
+import {MessageResponse, MessageResponseFactory} from './MessageInterface';
+import {PersonaResponse, PersonaResponseFactory} from './PersonaInterface';
 
 export interface Person extends PersonaResponse, ImageResponse, MessageResponse {
   id: string;
@@ -65,7 +65,7 @@ export class PersonFactory {
     const baseData = {
       id: faker.datatype.uuid().toString(),
       name: faker.name.fullName(),
-      age: faker.datatype.number({ min: 18, max: 65 }),
+      age: faker.datatype.number({min: 18, max: 65}),
       interests: faker.lorem.words(3),
       additional_info: faker.lorem.words(5),
       purpose_context: faker.helpers.arrayElement(['Product development', 'Marketing', 'Customer support', 'Sales', 'Human resources']),

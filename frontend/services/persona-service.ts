@@ -1,46 +1,38 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { useCallback, useState } from 'react';
-import { Person, PersonFactory } from "../models/Person";
-import { PersonaRequest, PersonaRequestFactory, PersonaResponse, PersonaResponseFactory } from "../models/PersonaInterface";
-import { ImageResponse, ImageResponseFactory } from "../models/ImageInterface";
-import { AnswerResponse, AnswerResponseFactory, PersonaQuestionRequest } from "../models/AnswerInterface";
-import { MessageResponse, MessageResponseFactory } from "../models/MessageInterface";
-import { getPersonas, getRandId, savePersona } from "./firebase";
+import axios, {AxiosInstance, AxiosResponse} from "axios";
+import {useCallback, useState} from 'react';
+import {Person} from "../models/Person";
+import {
+  PersonaRequest,
+  PersonaRequestFactory,
+  PersonaResponse,
+  PersonaResponseFactory
+} from "../models/PersonaInterface";
+import {ImageResponse, ImageResponseFactory} from "../models/ImageInterface";
+import {AnswerResponse, AnswerResponseFactory, PersonaQuestionRequest} from "../models/AnswerInterface";
+import {MessageResponse, MessageResponseFactory} from "../models/MessageInterface";
+import {deletePersona, getPersonas, getRandId, savePersona} from "./firebase";
 
 
 // TODO remove return of fake mock data in case API fails to deliver
 
-export default function usePersonaService() {
+export default function usePersonaService(userId: string | undefined) {
   const fakeUserId = '86tgh89zg9';
-  const baseUrl = 'http://localhost:7000'; // TODO: Change this to the real backend URL
+  const baseUrl = 'https://rpg-backend.caprover.jkoster.com/';
   const axiosInstance: AxiosInstance = axios.create({
     baseURL: baseUrl,
   });
-  const [persons, setPersons] = useState<Person[]>([]);
 
-  const fetchPersonas = useCallback(async (userId: string): Promise<void> => {
-    const fetchedPersonas = await getPersonas(userId = fakeUserId);
-
-    // const fakePersons: Person[] = [
-    //   PersonFactory.random(),
-    //   PersonFactory.random(),
-    //   PersonFactory.random(),
-    //   PersonFactory.random(),
-    //   PersonFactory.random(),
-    //   PersonFactory.random(),
-    // ];
-
-    setPersons(fetchedPersonas);
+  const fetchPersonas = useCallback(async (userId: string): Promise<Person[]> => {
+    const fetchedPersonas = await getPersonas(userId ?? fakeUserId);
+    return fetchedPersonas;
   }, []);
 
-  const createPerson = useCallback(async (personaData: PersonaRequest): Promise<Person> => {
+  const createPerson = useCallback(async (personaData: PersonaRequest, userId: string): Promise<Person> => {
     if (!personaData.name) {
       personaData = PersonaRequestFactory.random();
     }
 
-    const personaResponse: PersonaResponse = await generatePersona(personaData);
-    const imageResponse: string[] = await getImages(personaData);
-    const messageResponse: string[] = await getMessages(personaData);
+    const [personaResponse, imageResponse, messageResponse] = await Promise.all([generatePersona(personaData), getImages(personaData), getMessages(personaData)]);
 
     const id = getRandId();
 
@@ -56,12 +48,16 @@ export default function usePersonaService() {
       messages: messageResponse,
       imageUri: imageResponse[0],
     };
-
-    setPersons((persons) => [newPerson, ...persons]);
-    savePersona(fakeUserId, newPerson); // TODO: Change this to the real user ID
+    await savePersona(userId ?? fakeUserId, newPerson);
+    console.log('saved persona');
 
     return newPerson;
 
+  }, []);
+
+  const removePersona = useCallback(async (userId: string, personaId: string): Promise<string> => {
+    await deletePersona(userId ?? fakeUserId, personaId);
+    return personaId;
   }, []);
 
   const generatePersona = useCallback(async (personaData: PersonaRequest): Promise<PersonaResponse> => {
@@ -109,12 +105,12 @@ export default function usePersonaService() {
   }, []);
 
   return {
-    persons,
     fetchPersonas,
     createPerson,
     generatePersona,
     getImages,
     getAnswer,
     getMessages,
+    removePersona,
   };
 }

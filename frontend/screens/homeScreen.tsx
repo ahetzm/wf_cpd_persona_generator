@@ -1,27 +1,36 @@
-import { useNavigation } from "@react-navigation/native";
+import {useNavigation} from "@react-navigation/native";
+import {useRoute} from "@react-navigation/native";
 import React, {useEffect} from "react";
-import { ScrollView, StyleSheet, TouchableOpacity, View, Text } from "react-native";
+import {ScrollView, StyleSheet, TouchableOpacity, View, Text} from "react-native";
 import Card from "../components/card";
-import { HomeScreenNavigationProp } from "../models/NavigationTypes";
-import { getUser } from "../services/firebase";
+import {HomeScreenNavigationProp, HomeScreenRouteProp} from "../models/NavigationTypes";
+import {getUser} from "../services/firebase";
 import usePersonaService from "../services/persona-service";
+import { useState } from "react";
+import { Person } from "../models/Person";
 // import * as Notifications from 'expo-notifications';
-
-// Fetch test user from firebase
-const fakeUserId = "86tgh89zg9";
-getUser(fakeUserId).then((user) => {
-  console.log(user);
-});
 
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
-
-  const { persons, fetchPersonas } = usePersonaService();
+  const route = useRoute<HomeScreenRouteProp>();
+  const {user, personaToDelete} = route.params;
+  const [persons, setPersons] = useState<Person[]>([]);
+  const {fetchPersonas} = usePersonaService(user.uid);
+  console.log("Executing Home Function", user.uid, personaToDelete);
 
   // Fetch personas from firebase on component mount
   useEffect(() => {
-    fetchPersonas(fakeUserId);
+    console.log("Fetching personas", user.uid, personaToDelete);
+    fetchPersonas(user.uid).then((fetchPersonas: Person[]) => {
+      setPersons(fetchPersonas);
+    });
   }, [fetchPersonas]);
+
+  useEffect(() => {
+    if (personaToDelete) {
+      setPersons(persons.filter((person) => person.id !== personaToDelete));
+    }
+  }, [personaToDelete]);
 
 
   // // First, set the handler that will cause the notification
@@ -45,11 +54,31 @@ const HomeScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
+      { persons.length === 0 ? 
+          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={{color: '#000', marginTop: 20}}>No Personas yet!</Text>
+            <TouchableOpacity 
+              onPress={() => navigation.navigate("CreatePersona", {user: user})}
+              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
+            >
+              <Text style={{
+                padding: 10,
+                fontSize: 18,
+                backgroundColor: '#4BB543',
+                borderRadius: 100, 
+                color: '#000', 
+                marginTop: 7
+                }}>Click to generate your first Persona</Text>
+              
+            </TouchableOpacity>
+          </View> : null
+
+        }
       <ScrollView>
         {persons.map((person) => (
           <TouchableOpacity
             key={person.id}
-            onPress={() => navigation.navigate("Details", { person: person })}
+            onPress={() => navigation.navigate("Details", {person: person, user: user})}
           >
             <Card
               name={person.name}
@@ -59,24 +88,26 @@ const HomeScreen: React.FC = () => {
           </TouchableOpacity>
         ))}
       </ScrollView>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("CreatePersona")}
-        style={{
-          borderWidth: 1,
-          borderColor: '#fff',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: 70,
-          position: 'absolute',
-          bottom: 10,
-          right: 10,
-          height: 70,
-          backgroundColor: '#4BB543',
-          borderRadius: 100,
-        }}
+      { persons.length !== 0 ?
+        <TouchableOpacity
+          onPress={() => navigation.navigate("CreatePersona", {user: user})}
+          style={{
+            borderWidth: 1,
+            borderColor: '#fff',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 70,
+            position: 'absolute',
+            bottom: 10,
+            right: 10,
+            height: 70,
+            backgroundColor: '#4BB543',
+            borderRadius: 100,
+          }}
         >
-        <Text style={{fontSize: 48, lineHeight: 1, color: '#fff', marginBottom: 7}}>+</Text>
-      </TouchableOpacity>
+          <Text style={{fontSize: 48, color: '#fff', marginBottom: 7}}>+</Text>
+        </TouchableOpacity> : null
+      }
     </View>
   );
 };

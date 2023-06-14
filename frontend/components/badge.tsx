@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 
-const Badge = ({ text = '', backgroundColor = '#f77', textColor = '#fff' }) => {
+const Badge = ({text = '', backgroundColor = '#f77', textColor = '#fff'}) => {
   return (
-    <View style={[styles.container, { backgroundColor }]}>
-      <Text style={[styles.text, { color: textColor }]}>{text}</Text>
+    <View style={[styles.container, {backgroundColor}]}>
+      <Text style={[styles.text, {color: textColor}]}>{text}</Text>
     </View>
   );
 };
