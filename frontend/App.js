@@ -20,7 +20,7 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login">
-          <Stack.Screen name="Home" component={HomeScreen}/>
+
           <Stack.Screen name="Details" component={DetailsScreen}/>
           <Stack.Screen name="CreatePersona" component={CreatePersonaScreen}/>
           <Stack.Screen name="Chat" component={ChatScreen}/>
@@ -45,6 +45,17 @@ export default function App() {
                 </HeaderButtons>
               ),
             })}
+          />
+          <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={({navigation}) => ({
+                headerLeft: () => (
+                    <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
+                      <Item title="Loggout" onPress={() => navigation.navigate('Login')}/>
+                    </HeaderButtons>
+                ),
+              })}
           />
         </Stack.Navigator>
       </NavigationContainer>

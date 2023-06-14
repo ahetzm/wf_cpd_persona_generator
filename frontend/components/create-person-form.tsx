@@ -1,9 +1,60 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useNavigation} from "@react-navigation/native";
 import {View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions} from 'react-native';
 import usePersonaService from "../services/persona-service";
 import {PersonaRequest} from '../models/PersonaInterface';
 import {Person} from '../models/Person';
+
+const facts = [
+  'Funfact: Personas sind fiktive Charaktere, die auf der Grundlage von Recherchen erstellt werden, um die verschiedenen Benutzertypen zu repräsentieren, die Ihren Service, Ihr Produkt, Ihre Website oder Ihre Marke auf ähnliche Weise nutzen könnten. Sie helfen, die Bedürfnisse, Erfahrungen, Verhaltensweisen und Ziele Ihrer Benutzer zu verstehen',
+  'Funfact: Personas bieten aussagekräftige Archetypen, mit denen Sie Ihre Designentwicklung beurteilen können. Sie helfen dabei, die richtigen Fragen zu stellen und diese Fragen im Sinne der Benutzer zu beantworten, für die Sie gestalten​',
+  'Funfact: Im Design Thinking Prozess beginnen Designer oft in der zweiten Phase, der Define-Phase, mit der Erstellung von Personas. Sie dienen als Leitfaden für Ideation-Sessions wie Brainstorming, Worst Possible Idea und SCAMPER​',
+  'Funfact: Es gibt vier verschiedene Arten von Personas: zielgerichtete Personas, rollenbasierte Personas, einnehmende Personas und fiktive Personas. Jeder Typ hat seinen eigenen Fokus und Zweck, wie z.B. das Verstehen der Ziele des Benutzers, das Verstehen der Rolle des Benutzers in seiner Organisation, das Engagement des Designers mit der Persona oder das Erstellen von Annahmen basierend auf der Erfahrung des UX-Design-Teams',
+  'Funfact: Personas sind auch als Modellcharaktere oder zusammengesetzte Charaktere bekannt. Sie beschreiben keine echten Menschen, sondern Sie erstellen Ihre Personas basierend auf tatsächlichen Daten, die von mehreren Personen gesammelt wurden. Sie geben den oft kalten Fakten in Ihrer Forschung eine menschliche Note',
+];
+
+
+const LoadingScreen: React.FC = () => {
+  const [progress, setProgress] = useState(0);
+  const [fact, setFact] = useState('Loading fact...');
+
+  const getRandomFact = () => {
+    const randomIndex = Math.floor(Math.random() * facts.length);
+    setFact(facts[randomIndex]);
+  };
+
+  useEffect(() => {
+    getRandomFact();
+    // Update progress every 3 seconds (5 minutes total)
+    const interval = setInterval(() => {
+      setProgress(oldProgress => {
+        if (oldProgress < 1) {
+          return oldProgress + 0.01; // increase progress by 1%
+        }
+
+
+        clearInterval(interval);
+        return 1;
+      });
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+      <View style={styles.container}>
+        <Text style={styles.loadingText}>Loadings...</Text>
+        <View style={styles.progressBar}>
+          <View style={[styles.progress, { width: `${progress * 100}%` }]} />
+        </View>
+        <Text style={styles.factText}>{fact}</Text>
+      </View>
+  );
+};
+
+
+
+
 
 const CreatePersonForm: React.FC<any> = ({user}) => {
   const [purposeContext, setPurposeContext] = useState('');
@@ -16,6 +67,7 @@ const CreatePersonForm: React.FC<any> = ({user}) => {
 
   const {createPerson} = usePersonaService(user.uid);
   const navigation = useNavigation();
+
 
   const handleSubmit = () => {
     console.log('Submitting form...');
@@ -66,7 +118,7 @@ const CreatePersonForm: React.FC<any> = ({user}) => {
           fontSize: 16,
         }}
         >
-          Loading...
+          <LoadingScreen></LoadingScreen>
         </Text>
       }
 
@@ -135,6 +187,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#fff',
   },
+  loadingText: {
+    marginBottom: 20, // adjust this value for your desired spacing
+  },
+    progressBar: {
+  flexDirection: 'row',
+      height: 20,
+      width: '80%',
+      backgroundColor: 'white',
+      borderColor: '#000',
+      borderWidth: 2,
+      borderRadius: 5,
+},
+progress: {
+  backgroundColor: 'blue',
+},
   formContainer: {
     width: '100%',
     maxWidth: 400,
@@ -168,5 +235,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     fontSize: 16,
+  },
+  absoluteFill: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    backgroundColor: '#008080',
+  },
+  factText: {
+    marginTop: 10,
+    textAlign: 'center',
   },
 });
