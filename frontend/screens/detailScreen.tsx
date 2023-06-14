@@ -54,7 +54,7 @@ const DetailScreen: React.FC = () => {
           </View>
 
           <Text style={styles.value}>Lifestyle: {person.psychographics.lifestyle}</Text>
-          <View style={{flexDirection: 'row'}}>
+          <View style={styles.rowContainer}>
             <Text>Personality traits: </Text>
             <View style={styles.badgeContainer}>
               {person.psychographics.personality_traits.map((trait, index) => {
@@ -62,7 +62,7 @@ const DetailScreen: React.FC = () => {
               })}
             </View>
           </View>
-          <View style={{flexDirection: 'row'}}>
+          <View style={styles.rowContainer}>
             <Text>Values: </Text>
             <View style={styles.badgeContainer}>
               {person.psychographics.values.map((value, index) => {
@@ -87,11 +87,11 @@ const DetailScreen: React.FC = () => {
           <Text style={styles.value}>Passions: {person.motivations.passions}</Text>
 
           <Text style={styles.sectionTitle}>Communication Preferences</Text>
-          <View style={{flexDirection: 'row'}}>
+          <View style={styles.rowContainer}>
             <Text>Preferred communication channels: </Text>
             <View style={styles.badgeContainer}>
               {person.communication_preferences.preferred_channels.map((channel, index) => {
-                return (<Badge text={channel} key={channel + index}/>)
+                return <Badge text={channel} key={channel + index}/>
               })}
             </View>
           </View>
@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: "row",
     alignItems: "center",
+    flexWrap: "wrap",
   },
   badgeContainer: {
     flexWrap: "wrap",

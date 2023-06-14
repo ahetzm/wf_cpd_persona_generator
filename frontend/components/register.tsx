@@ -20,7 +20,7 @@ const Register: React.FC<Props> = ({navigation}) => {
     try {
       const result = await createUserWithEmailAndPassword(auth, email, password);
 
-      if(result.user) {
+      if (result.user) {
         console.log(result.user);
         console.log(result.user.uid);
         const user: User = {
@@ -29,10 +29,9 @@ const Register: React.FC<Props> = ({navigation}) => {
           email: result.user.email ?? email,
         }
         await saveUser(user);
-  
+
         navigation.navigate('Home', {user: user});
-      }
-      else {
+      } else {
         setErrorMessage('Something went wrong! Please try again.');
       }
     } catch (error: any) {

@@ -1,5 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, ScrollView, Image} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  StyleSheet,
+  ScrollView,
+  Image,
+  KeyboardAvoidingView, Platform
+} from 'react-native';
 import usePersonaService from "../services/persona-service";
 import {PersonaQuestionRequest} from "../models/AnswerInterface";
 import {getMessages, getRandId, saveMessage} from "../services/firebase";
@@ -78,13 +88,18 @@ const Chat: React.FC<Props> = ({persona, user}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 84 : 0}
+    >
       <ScrollView>
-
         <View style={styles.infoContainer}>
           <Image source={{uri: persona.imageUri}} style={styles.image}/>
           <Text style={styles.name}>{persona.name}</Text>
-          <Text style={styles.age}>{persona.age} years old, {persona.demographics.gender}</Text>
+          <Text style={styles.age}>
+            {persona.age} years old, {persona.demographics.gender}
+          </Text>
           <Text style={styles.age}>{persona.demographics.location}</Text>
         </View>
 
@@ -114,7 +129,7 @@ const Chat: React.FC<Props> = ({persona, user}) => {
           <Text style={styles.sendButtonText}>Send</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

@@ -1,13 +1,12 @@
 import {useNavigation} from "@react-navigation/native";
 import {useRoute, useFocusEffect} from "@react-navigation/native";
-import React, { useCallback } from "react";
+import React, {useCallback} from "react";
 import {ScrollView, StyleSheet, TouchableOpacity, View, Text} from "react-native";
 import Card from "../components/card";
 import {HomeScreenNavigationProp, HomeScreenRouteProp} from "../models/NavigationTypes";
 import usePersonaService from "../services/persona-service";
-import { useState } from "react";
-import { Person } from "../models/Person";
-// import * as Notifications from 'expo-notifications';
+import {useState} from "react";
+import {Person} from "../models/Person";
 
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
@@ -53,26 +52,26 @@ const HomeScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      { persons.length === 0 ? 
-          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={{color: '#000', marginTop: 20}}>No Personas yet!</Text>
-            <TouchableOpacity 
-              onPress={() => navigation.navigate("CreatePersona", {user: user})}
-              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
-            >
-              <Text style={{
-                padding: 10,
-                fontSize: 18,
-                backgroundColor: '#4BB543',
-                borderRadius: 100, 
-                color: '#000', 
-                marginTop: 7
-                }}>Click to generate your first Persona</Text>
-              
-            </TouchableOpacity>
-          </View> : null
+      {persons.length === 0 ?
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Text style={{color: '#000', marginTop: 20}}>No Personas yet!</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("CreatePersona", {user: user})}
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
+          >
+            <Text style={{
+              padding: 10,
+              fontSize: 18,
+              backgroundColor: '#4BB543',
+              borderRadius: 100,
+              color: '#000',
+              marginTop: 7
+            }}>Click to generate your first Persona</Text>
 
-        }
+          </TouchableOpacity>
+        </View> : null
+
+      }
       <ScrollView>
         {persons.map((person) => (
           <TouchableOpacity
@@ -87,7 +86,7 @@ const HomeScreen: React.FC = () => {
           </TouchableOpacity>
         ))}
       </ScrollView>
-      { persons.length !== 0 ?
+      {persons.length !== 0 ?
         <TouchableOpacity
           onPress={() => navigation.navigate("CreatePersona", {user: user})}
           style={{

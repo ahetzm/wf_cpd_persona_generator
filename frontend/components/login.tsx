@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Text} from 'react-native';
 import {TextInput, Button} from 'react-native-paper';
 import {signInWithEmailAndPassword} from 'firebase/auth';
 import {auth, getUser} from '../services/firebase';
 import {User} from '../models/User';
+
 interface Props {
   navigation: any;
 }
@@ -23,8 +24,7 @@ const Login: React.FC<Props> = ({navigation}) => {
         const user: User = await getUser(result.user.uid);
 
         navigation.navigate('Home', {user: user});
-      }
-      else {
+      } else {
         setErrorMessage('Something went wrong! Please try again.');
       }
     } catch (error) {
@@ -69,6 +69,9 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 16,
   },
+  errorText: {
+    color: 'red',
+  }
 });
 
 export default Login;

@@ -13,7 +13,6 @@ const facts = [
   'Funfact: Personas sind auch als Modellcharaktere oder zusammengesetzte Charaktere bekannt. Sie beschreiben keine echten Menschen, sondern Sie erstellen Ihre Personas basierend auf tatsächlichen Daten, die von mehreren Personen gesammelt wurden. Sie geben den oft kalten Fakten in Ihrer Forschung eine menschliche Note',
 ];
 
-
 const LoadingScreen: React.FC = () => {
   const [progress, setProgress] = useState(0);
   const [fact, setFact] = useState('Loading fact...');
@@ -31,8 +30,6 @@ const LoadingScreen: React.FC = () => {
         if (oldProgress < 1) {
           return oldProgress + 0.01; // increase progress by 1%
         }
-
-
         clearInterval(interval);
         return 1;
       });
@@ -42,19 +39,15 @@ const LoadingScreen: React.FC = () => {
   }, []);
 
   return (
-      <View style={styles.container}>
-        <Text style={styles.loadingText}>Loadings...</Text>
-        <View style={styles.progressBar}>
-          <View style={[styles.progress, { width: `${progress * 100}%` }]} />
-        </View>
-        <Text style={styles.factText}>{fact}</Text>
+    <View style={styles.container}>
+      <Text style={styles.loadingText}>Loadings...</Text>
+      <View style={styles.progressBar}>
+        <View style={[styles.progress, {width: `${progress * 100}%`}]}/>
       </View>
+      <Text style={styles.factText}>{fact}</Text>
+    </View>
   );
 };
-
-
-
-
 
 const CreatePersonForm: React.FC<any> = ({user}) => {
   const [purposeContext, setPurposeContext] = useState('');
@@ -67,7 +60,6 @@ const CreatePersonForm: React.FC<any> = ({user}) => {
 
   const {createPerson} = usePersonaService(user.uid);
   const navigation = useNavigation();
-
 
   const handleSubmit = () => {
     console.log('Submitting form...');
@@ -104,7 +96,6 @@ const CreatePersonForm: React.FC<any> = ({user}) => {
       // @ts-ignore
       navigation.navigate("Details", {person: person, user: user});
     });
-
   }
 
   return (
@@ -190,18 +181,18 @@ const styles = StyleSheet.create({
   loadingText: {
     marginBottom: 20, // adjust this value for your desired spacing
   },
-    progressBar: {
-  flexDirection: 'row',
-      height: 20,
-      width: '80%',
-      backgroundColor: 'white',
-      borderColor: '#000',
-      borderWidth: 2,
-      borderRadius: 5,
-},
-progress: {
-  backgroundColor: 'blue',
-},
+  progressBar: {
+    flexDirection: 'row',
+    height: 20,
+    width: '80%',
+    backgroundColor: 'white',
+    borderColor: '#000',
+    borderWidth: 2,
+    borderRadius: 5,
+  },
+  progress: {
+    backgroundColor: 'blue',
+  },
   formContainer: {
     width: '100%',
     maxWidth: 400,

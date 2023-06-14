@@ -103,7 +103,6 @@ export function getRandId(length = 15) {
   return [...Array(length)].map(() => Math.random().toString(36)[2]).join("");
 }
 
-
 // array of unsubscribe functions to stop listening to firebase
 const unsubscribeFns = [];
 
