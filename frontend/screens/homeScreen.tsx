@@ -1,10 +1,9 @@
 import {useNavigation} from "@react-navigation/native";
-import {useRoute} from "@react-navigation/native";
-import React, {useEffect} from "react";
+import {useRoute, useFocusEffect} from "@react-navigation/native";
+import React, { useCallback } from "react";
 import {ScrollView, StyleSheet, TouchableOpacity, View, Text} from "react-native";
 import Card from "../components/card";
 import {HomeScreenNavigationProp, HomeScreenRouteProp} from "../models/NavigationTypes";
-import {getUser} from "../services/firebase";
 import usePersonaService from "../services/persona-service";
 import { useState } from "react";
 import { Person } from "../models/Person";
@@ -19,18 +18,18 @@ const HomeScreen: React.FC = () => {
   console.log("Executing Home Function", user.uid, personaToDelete);
 
   // Fetch personas from firebase on component mount
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     console.log("Fetching personas", user.uid, personaToDelete);
     fetchPersonas(user.uid).then((fetchPersonas: Person[]) => {
       setPersons(fetchPersonas);
     });
-  }, [fetchPersonas]);
+  }, [fetchPersonas]));
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     if (personaToDelete) {
       setPersons(persons.filter((person) => person.id !== personaToDelete));
     }
-  }, [personaToDelete]);
+  }, [personaToDelete]));
 
 
   // // First, set the handler that will cause the notification
