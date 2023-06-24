@@ -1,4 +1,4 @@
-# cpd-persona-generator
+# Persona Generator
 
 ## Backend
 Node sever connecting to OpenAI API
